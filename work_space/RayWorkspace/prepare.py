@@ -529,33 +529,39 @@ def create_fault_narrative_cols(df):
     df = lang_prep_factor_col(df)
     # create boolean col for "distraction" cause
     dist = ['inatt', 'distr', 'cell']
-    df['distraction'] = df.apply(lambda row: 1
-                                 if any(x in row.fault_narrative for x in dist)
-                                 else 0, axis=1)
+    df['fault_distraction'] = df.apply(
+                                lambda row: 1
+                                if any(x in row.fault_narrative for x in dist)
+                                else 0, axis=1)
     # create boolean col for "meaneuver" related cause
     manu = ['lane','turn','follo','pas','back','evas']
-    df['maneuver'] = df.apply(lambda row: 1
-                              if any(x in row.fault_narrative for x in manu)
-                              else 0, axis=1)
+    df['fault_maneuver'] = df.apply(
+                                lambda row: 1
+                                if any(x in row.fault_narrative for x in manu)
+                                else 0, axis=1)
     # create boolean col for "speed" related cause
-    df['speed'] = df.apply(lambda row: 1
-                           if 'speed' in row.fault_narrative
-                           else 0, axis=1)
+    df['fault_speed'] = df.apply(
+                                lambda row: 1
+                                if 'speed' in row.fault_narrative
+                                else 0, axis=1)
     # create boolean col for intoxication realted causes
     intx = ['drink', 'infl', 'medi']
-    df['intoxication'] = df.apply(lambda row: 1
-                                  if any(x in row.fault_narrative for x in intx)
-                                  else 0, axis=1)
+    df['fault_intoxication'] = df.apply(
+                                lambda row: 1
+                                if any(x in row.fault_narrative for x in intx)
+                                else 0, axis=1)
     # create boolean col for fatigue realted causes
     fati = ['sleep', 'fatig', 'ill']
-    df['fatigue'] = df.apply(lambda row: 1
-                             if any(x in row.fault_narrative for x in fati)
-                             else 0, axis=1)
+    df['fault_fatigue'] = df.apply(
+                                lambda row: 1
+                                if any(x in row.fault_narrative for x in fati)
+                                else 0, axis=1)
     # create boolean col for failing to "yield" or stop related causes
     yild = ['stop', 'yiel']
-    df['yield'] = df.apply(lambda row: 1
-                           if any(x in row.fault_narrative for x in fati)
-                           else 0, axis=1)
+    df['fault_yield'] = df.apply(
+                                lambda row: 1
+                                if any(x in row.fault_narrative for x in fati)
+                                else 0, axis=1)
     
     return df
 
@@ -620,4 +626,30 @@ def clean_weather_cats(df):
     # rename column
     df = df.rename(columns={'weather_conditions':'conditions_weather'})
     
+    return df
+
+
+#################### Final Data Prep ####################
+
+
+def prep_collision_data():
+    '''
+    '''
+
+    # read in csv
+    df = pd.read_csv('all_accident_data.csv')
+    # perform initial, misc prep work
+    df = misc_prep(df)
+    # prepare driver data
+    df = prep_driver_data(df)
+    # prepare vehicle data
+    df = prep_vehicle_data(df)
+    # prepare damage data
+    df = prep_damage_data(df)
+    # create fault factor cols
+    df = create_fault_narrative_cols(df)
+    # prep road conditions
+    df = clean_traffic_cats(df)
+    df = clean_weather_cats(df)
+
     return df
