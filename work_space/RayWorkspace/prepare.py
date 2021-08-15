@@ -481,14 +481,10 @@ def lang_prep_factor_col(df):
 
     '''
 
-    # create a list of words to exclude from vehicle makes
-    makes = [str(x).strip().lower() for x in df.vehicle_make.unique()]
     # create list of common, non-insightful words in narrative
     more_words = ['"', '\'', 'driver', 'explain', 'narrative', 'nan', 
                    'undefined', 'unknown']
-    # concats lists into one list for remove_stopwords function
-    more_words = more_words + makes
-    #
+    # perform cleaning on text in accident_factor
     df.accident_factor = df.accident_factor.apply(lambda row: 
                                     lemmatize(remove_stopwords(tokenize(
                                         basic_clean(str(row))), more_words)))
