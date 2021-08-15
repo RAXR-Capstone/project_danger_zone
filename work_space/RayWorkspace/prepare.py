@@ -6,6 +6,41 @@ import pandas as pd
 import numpy as np
 import re
 
+# import word cleaning tools
+import unicodedata
+import nltk
+
+
+#################### Prep MVC Data ####################
+
+
+def initial_prep(df):
+    '''
+
+    Initial basic preparation of auto collision data. Remove duplicate
+    observations and convert crash_data to approprate datatime format
+    using 24-hour time. Drops unnecessary columns.
+
+    '''
+
+    # drop duplicate observations
+    df = df.drop_duplicates()
+    # convert crash_date to datetime dtype and 24-hour clock
+    df.crash_date =  df.crash_date.apply(lambda row: \
+                     pd.to_datetime(row).strftime('%m/%d/%Y %H:%M'))
+    # drop columns
+    df = df.drop(columns=['Unnamed: 0', 'index', 'case_id',
+                          'crash_city', 'police_dept','crash_location',
+                          'driver_residence', 'driver_insured'])
+    # remove mph and convert speed_limit column to integer data type
+    df.speed_limit = df.speed_limit.apply(lambda row:
+                                          re.search(r'(\D?\d{1,2}\s)', row)\
+                                    .group(1)).astype('int')
+    # rename speed_limit_mpg for clarity on units
+    df = df.rename(columns={'speed_limit':'speed_limit_mph'})
+    
+    return df
+
 
 #################### Prep Driver Data ####################
 
@@ -132,7 +167,7 @@ def clean_vin(df):
 
     '''
     
-    # replaces Xs for improved use with NTHSA cross reference
+    # replace Xs for improved use with NTHSA cross reference
     df.car_vin = df.car_vin.apply(lambda row: re.sub(r'(\w{4})X{9}(\d{4})',
                                                      r'\1*********\2', row))
     # set mask for appropriate VIN values
@@ -219,7 +254,8 @@ def clean_color(df):
     
     # clean up vehicle color to contain only single word
     df.car_color = df[~df.car_color.isna()].car_color.apply(lambda row: \
-                                re.search(r'\W*(\w+)[\W]*', row).group(1))
+                                        re.search(r'\W*(\w+)[\W]*', row)\
+                                        .group(1).lower())
     # convert unknowns to NaN for later imputation or other handling
     df.car_color = np.where(df.car_color.isin(['Unknown']),
                                       np.nan, df.car_color)
@@ -239,7 +275,7 @@ def prep_vehicle_data(df):
     Used functions defined above to prepare data related to vehicle,
     removing inappropraite values and missing data for better imputing
     and handling, and returns vehicle data prepped for exploration.
-    
+
     '''
 
     # use function to prepare vin with asterisk
@@ -347,9 +383,9 @@ def make_dmg_type_columns(df):
 def prep_damage_data(df):
     '''
 
-    Uses functions to create column with area of damage for the vehicle and
-    columns of possible types of damage incurred, drops driver_car_damage
-    column that contains lengthy string descriptor
+    Uses functions to create column with area of damage for the vehicle
+    and columns of possible types of damage incurred, drops
+    driver_car_damage column that contains lengthy string descriptor
 
     '''
 
@@ -360,4 +396,155 @@ def prep_damage_data(df):
     # drop wordy column used to construct above
     df = df.drop(columns='driver_car_damage')
 
+    return df
+
+
+#################### Language Prep Tools ####################
+
+
+def basic_clean(string):
+    '''
+    '''
+    
+    # convert applicable characters to lowercase
+    string = string.lower()
+    # normalize unicode characters
+    string = unicodedata.normalize('NFKD', string)\
+                        .encode('ascii', 'ignore')\
+                        .decode('utf-8')
+    # substitute non-alphanums, spaces, and
+    # single quotes/apostrophes
+    string = re.sub(r'[^0-9a-z\s\']', '', string)
+    
+    return string
+
+
+def tokenize(string):
+    '''
+    '''
+    
+    # create tokenizer object
+    tokenizer = nltk.tokenize.ToktokTokenizer()
+    # tokenize string and return as string
+    string = tokenizer.tokenize(string, return_str=True)
+    
+    return string
+
+
+def remove_stopwords(string, extra_words=None, exclude_words=None):
+    '''
+    '''
+    
+    # create stopwords list
+    stopword_list = nltk.corpus.stopwords.words('english')
+    # add more stop words if needed
+    if extra_words != None:
+        stopword_list.extend(extra_words)
+    # remove stop words if needed
+    if exclude_words != None:
+        if len(exclude_words) > 1:
+            for word in exclude_words:
+                stopword_list.remove(word)
+        else:
+            stopword_list.remove(exclude_words[0])
+
+    # obtain list and join filtered for stopwords
+    string = ' '.join(
+                [word for word in string.split() if word not in stopword_list])
+    
+    return string
+
+
+def lemmatize(string):
+    '''
+    '''
+    
+    # create lemmatizer object
+    lemmer = nltk.stem.WordNetLemmatizer()
+    # get list of lems for words in split string
+    string_lems = [lemmer.lemmatize(word) for word in string.split()]
+    # join stems back as string from list
+    string = ' '.join(string_lems)
+    
+    return string
+
+
+#################### Prep Factor Data ####################
+
+
+def lang_prep_factor_col(df):
+    '''
+
+    Takes the accident_factor column from the auto collision data and
+    prepares it in a manner for deriving one-hot encoded features for
+    MVC causes and future use in NLP exploration.
+
+    '''
+
+    # create a list of words to exclude from vehicle makes
+    makes = [str(x).strip().lower() for x in df.vehicle_make.unique()]
+    # create list of common, non-insightful words in narrative
+    more_words = ['"', '\'', 'driver', 'explain', 'narrative', 'nan', 
+                   'undefined', 'unknown']
+    # concats lists into one list for remove_stopwords function
+    more_words = more_words + makes
+    #
+    df.accident_factor = df.accident_factor.apply(lambda row: 
+                                    lemmatize(remove_stopwords(tokenize(
+                                        basic_clean(str(row))), more_words)))
+    # remove vehicle years from string
+    df.accident_factor = df.accident_factor.apply(lambda row:
+                                                  re.sub(r'\d{4}\s?', '', row))
+    df.accident_factor = df.accident_factor.apply(lambda row: row.strip())
+
+    return df
+
+
+def create_fault_factor_cols(df):
+    '''
+
+    Takes the auto collision DataFrame and uses keywords from the
+    accident_factor column to derive one-hot encoded columns for
+    possible fault factors, where all 0s indicates "Other" causes when
+    at_fault == 1
+
+    '''
+    
+    df = lang_prep_factor_col(df)
+    # create boolean col for "distraction" cause
+    dist = ['inatt', 'distr', 'cell']
+    df['distraction'] = df.apply(lambda row: 1
+                                 if any(x in row.accident_factor for x in dist)
+                                 and row.at_fault == 1
+                                 else 0, axis=1)
+    # create boolean col for "meaneuver" related cause
+    manu = ['lane','turn','follo','pas','back','evas']
+    df['maneuver'] = df.apply(lambda row: 1
+                              if any(x in row.accident_factor for x in manu)
+                              and row.at_fault == 1
+                              else 0, axis=1)
+    # create boolean col for "speed" related cause
+    df['speed'] = df.apply(lambda row: 1
+                           if 'speed' in str(row.accident_factor).lower()
+                           and row.at_fault == 1
+                           else 0, axis=1)
+    # create boolean col for intoxication realted causes
+    intx = ['drink', 'infl', 'medi']
+    df['intoxication'] = df.apply(lambda row: 1
+                                  if any(x in row.accident_factor for x in intx)
+                                  and row.at_fault == 1
+                                  else 0, axis=1)
+    # create boolean col for fatigue realted causes
+    fati = ['sleep', 'fatig', 'ill']
+    df['fatigue'] = df.apply(lambda row: 1
+                             if any(x in row.accident_factor for x in fati)
+                             and row.at_fault == 1
+                             else 0, axis=1)
+    # create boolean col for failing to "yield" or stop related causes
+    yild = ['stop', 'yiel']
+    df['yield'] = df.apply(lambda row: 1
+                           if any(x in row.accident_factor for x in fati)
+                           and row.at_fault == 1
+                           else 0, axis=1)
+    
     return df
