@@ -14,7 +14,7 @@ import nltk
 #################### Prep MVC Data ####################
 
 
-def initial_prep(df):
+def misc_prep(df):
     '''
 
     Initial basic preparation of auto collision data. Remove duplicate
@@ -29,15 +29,19 @@ def initial_prep(df):
     df.crash_date =  df.crash_date.apply(lambda row: \
                      pd.to_datetime(row).strftime('%m/%d/%Y %H:%M'))
     # drop columns
-    df = df.drop(columns=['Unnamed: 0', 'index', 'case_id',
-                          'crash_city', 'police_dept','crash_location',
+    df = df.drop(columns=['case_id', 'crash_city',
+                          'police_dept', 'crash_location',
                           'driver_residence', 'driver_insured'])
     # remove mph and convert speed_limit column to integer data type
     df.speed_limit = df.speed_limit.apply(lambda row:
                                           re.search(r'(\D?\d{1,2}\s)', row)\
                                     .group(1)).astype('int')
-    # rename speed_limit_mpg for clarity on units
-    df = df.rename(columns={'speed_limit':'speed_limit_mph'})
+    # rename columns
+    rename_dict = {'accident_factor':'fault_narrative',
+                   'at_fault':'fault_reported',
+                   'num_of_injuries':'injury_count_total',
+                   'speed_limit':'speed_limit_mph'}
+    df = df.rename(columns=rename_dict)
     
     return df
 
@@ -55,10 +59,10 @@ def create_dl_classes(df):
     '''
     
     # create cdl boolean column where DL type contains "commericial"
-    df['cdl'] = df.driver_license_type.apply(lambda row: \
+    df['dl_cdl'] = df.driver_license_type.apply(lambda row: \
                     1 if str(row).lower().__contains__('commercial') else 0)
     # create unlicensed bool column wher DL type contains "unlicensed"
-    df['unlicensed'] = df.driver_license_type.apply(lambda row: \
+    df['dl_unlicensed'] = df.driver_license_type.apply(lambda row: \
                     1 if str(row).lower().__contains__('unlicensed') else 0)
     # create bool columns where DL type contains "a", "b", and "m"
     df['dl_class_a'] = df.driver_license_type.apply(lambda row: \
@@ -91,6 +95,7 @@ def clean_driver_race(df):
                             lambda row: np.nan
                             if any(x in row for x in ['unknown','nan'])
                             else row)
+    df = df.rename(columns={'driver_ethnicity':'driver_race'})
 
     return df
 
@@ -118,6 +123,28 @@ def clean_driver_age(df):
     return df
 
 
+def clean_driver_gender(df):
+    '''
+    '''
+
+    # replace "Unknown" gender with NaN
+    df.driver_gender = np.where(df.driver_gender == 'Unknown', np.nan,
+                                                    df.driver_gender)
+    # replace NaN with -1 for later handling
+    df.driver_gender = np.where(df.driver_gender.isna(), -1,
+                                                    df.driver_gender)
+    # change to one-hot where male gender driver == 1
+    df.driver_gender = np.where(df.driver_gender == 'Male', 1,
+                                                    df.driver_gender)
+    df.driver_gender = np.where(df.driver_gender == 'Female', 0,
+                                                    df.driver_gender)
+    # change dtype to int and rename
+    df.driver_gender = df.driver_gender.astype('int')
+    df = df.rename(columns={'driver_gender':'driver_male'})
+
+    return df
+
+
 def prep_driver_data(df):
     '''
 
@@ -128,21 +155,15 @@ def prep_driver_data(df):
 
     '''
 
-    # replace "Unknown" gender with NaN
-    df.driver_gender = np.where(df.driver_gender == 'Unknown', np.nan,
-                                                    df.driver_gender)
-    # create one-hot where male gender driver == 1
-    df['driver_male'] = np.where(df.driver_gender == 'Male', 1, -1)
-    df['driver_male'] = np.where(df.driver_gender == 'Female', 0,
-                                                    df.driver_male)
-    # drop gender column
-    df = df.drop(columns='driver_gender')
     # set DL state as Texas, Other, or NaN
     df.driver_license_state = np.where(df.driver_license_state.isin(\
                     ['UNKNOWN', 'Unknown']), np.nan, df.driver_license_state)
     df.driver_license_state = np.where(df.driver_license_state.isin(\
                     ['texas', np.nan]), df.driver_license_state, 'other')
+    # rename column
     df = df.rename(columns={'driver_license_state':'dl_state'})
+    # use function to change gender to one-hot
+    df = clean_driver_gender(df)
     # use function to create DL class bool columns
     df = create_dl_classes(df)
     # use function to clean driver_ethnicity column
@@ -176,7 +197,7 @@ def clean_vin(df):
     # replace inappropriate VIN values with "Unknown"
     df.car_vin = np.where(df.car_vin.isin(df[mask].car_vin),df.car_vin, np.nan)
     # rename column
-    df = df.rename(columns={'car_vin':'vin'})
+    df = df.rename(columns={'car_vin':'vehicle_id'})
     
     return df
 
@@ -475,7 +496,7 @@ def lemmatize(string):
 def lang_prep_factor_col(df):
     '''
 
-    Takes the accident_factor column from the auto collision data and
+    Takes the fault_narrative column from the auto collision data and
     prepares it in a manner for deriving one-hot encoded features for
     MVC causes and future use in NLP exploration.
 
@@ -484,23 +505,23 @@ def lang_prep_factor_col(df):
     # create list of common, non-insightful words in narrative
     more_words = ['"', '\'', 'driver', 'explain', 'narrative', 'nan', 
                    'undefined', 'unknown']
-    # perform cleaning on text in accident_factor
-    df.accident_factor = df.accident_factor.apply(lambda row: 
+    # perform cleaning on text in fault_narrative
+    df.fault_narrative = df.fault_narrative.apply(lambda row: 
                                     lemmatize(remove_stopwords(tokenize(
                                         basic_clean(str(row))), more_words)))
     # remove vehicle years from string
-    df.accident_factor = df.accident_factor.apply(lambda row:
+    df.fault_narrative = df.fault_narrative.apply(lambda row:
                                                   re.sub(r'\d{4}\s?', '', row))
-    df.accident_factor = df.accident_factor.apply(lambda row: row.strip())
+    df.fault_narrative = df.fault_narrative.apply(lambda row: row.strip())
 
     return df
 
 
-def create_fault_factor_cols(df):
+def create_fault_narrative_cols(df):
     '''
 
     Takes the auto collision DataFrame and uses keywords from the
-    accident_factor column to derive one-hot encoded columns for
+    fault_narrative column to derive one-hot encoded columns for
     possible fault factors, where all 0s indicates "Other" causes
 
     '''
@@ -509,31 +530,31 @@ def create_fault_factor_cols(df):
     # create boolean col for "distraction" cause
     dist = ['inatt', 'distr', 'cell']
     df['distraction'] = df.apply(lambda row: 1
-                                 if any(x in row.accident_factor for x in dist)
+                                 if any(x in row.fault_narrative for x in dist)
                                  else 0, axis=1)
     # create boolean col for "meaneuver" related cause
     manu = ['lane','turn','follo','pas','back','evas']
     df['maneuver'] = df.apply(lambda row: 1
-                              if any(x in row.accident_factor for x in manu)
+                              if any(x in row.fault_narrative for x in manu)
                               else 0, axis=1)
     # create boolean col for "speed" related cause
     df['speed'] = df.apply(lambda row: 1
-                           if 'speed' in row.accident_factor
+                           if 'speed' in row.fault_narrative
                            else 0, axis=1)
     # create boolean col for intoxication realted causes
     intx = ['drink', 'infl', 'medi']
     df['intoxication'] = df.apply(lambda row: 1
-                                  if any(x in row.accident_factor for x in intx)
+                                  if any(x in row.fault_narrative for x in intx)
                                   else 0, axis=1)
     # create boolean col for fatigue realted causes
     fati = ['sleep', 'fatig', 'ill']
     df['fatigue'] = df.apply(lambda row: 1
-                             if any(x in row.accident_factor for x in fati)
+                             if any(x in row.fault_narrative for x in fati)
                              else 0, axis=1)
     # create boolean col for failing to "yield" or stop related causes
     yild = ['stop', 'yiel']
     df['yield'] = df.apply(lambda row: 1
-                           if any(x in row.accident_factor for x in fati)
+                           if any(x in row.fault_narrative for x in fati)
                            else 0, axis=1)
     
     return df
@@ -553,9 +574,14 @@ def clean_traffic_cats(df):
                                 lambda row: 'signal light'
                                 if 'signal' in row
                                 else row)
+    df.traffic_conditions = df.traffic_conditions.apply(
+                                lambda row: 'flashing light'
+                                if 'flashing' in row
+                                else row)
     # convert categories no in road list into "other"
-    road = ['marked', 'none', 'signal', 'stop',
-            'center', 'nan', 'yield', 'officer']
+    road = ['marked', 'none', 'signal',
+            'stop', 'flashing', 'center',
+            'nan', 'yield', 'officer']
     df.traffic_conditions = df.traffic_conditions.apply(
                                 lambda row: row
                                 if any(x in row for x in road)
@@ -565,6 +591,8 @@ def clean_traffic_cats(df):
                                 lambda row: np.nan
                                 if row == 'nan'
                                 else row)
+    # rename column
+    df = df.rename(columns={'traffic_conditions':'conditions_road'})
 
     return df
 
@@ -589,5 +617,7 @@ def clean_weather_cats(df):
                                 lambda row: np.nan
                                 if row == 'nan'
                                 else row)
+    # rename column
+    df = df.rename(columns={'weather_conditions':'conditions_weather'})
     
     return df
