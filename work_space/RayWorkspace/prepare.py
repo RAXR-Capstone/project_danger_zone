@@ -525,7 +525,7 @@ def create_fault_factor_cols(df):
                               else 0, axis=1)
     # create boolean col for "speed" related cause
     df['speed'] = df.apply(lambda row: 1
-                           if 'speed' in str(row.accident_factor).lower()
+                           if 'speed' in row.accident_factor
                            and row.at_fault == 1
                            else 0, axis=1)
     # create boolean col for intoxication realted causes
