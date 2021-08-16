@@ -10,6 +10,9 @@ import re
 import unicodedata
 import nltk
 
+# import data tools
+from sklearn.model_selection import train_test_split
+
 # hide warnings
 import warnings
 warnings.filterwarnings("ignore")
@@ -116,7 +119,7 @@ def clean_driver_age(df):
     '''
 
     Converts driver_age column into integer data type and replaces
-    missing or inappropriate values with -1 for future imputing or
+    missing or inappropriate values with NaN for future imputing or
     other means of handling
 
     '''
@@ -124,13 +127,11 @@ def clean_driver_age(df):
     # create mask where driver's age is non-digit
     mask = df.driver_age.apply(lambda row: bool(
                                 re.search(r'\D*\d+\D*', str(row))))
-    # replace non-digit drivers age with -1
+    # replace non-digit drivers age with Nan
     df.driver_age = np.where(df.driver_age.isin(df[mask].driver_age),
-                                                df.driver_age, -1)
-    # replace driver_age less than 6 with -1
-    df.driver_age = np.where(df.driver_age >= 10, df.driver_age, -1)
-    # set driver_age data type as integer
-    df.driver_age = df.driver_age.astype('int')
+                                                df.driver_age, np.nan)
+    # replace driver_age less than 6 with NaN
+    df.driver_age = np.where(df.driver_age >= 10, df.driver_age, np.nan)
 
     return df
 
@@ -142,16 +143,12 @@ def clean_driver_gender(df):
     # replace "Unknown" gender with NaN
     df.driver_gender = np.where(df.driver_gender == 'Unknown', np.nan,
                                                     df.driver_gender)
-    # replace NaN with -1 for later handling
-    df.driver_gender = np.where(df.driver_gender.isna(), -1,
-                                                    df.driver_gender)
     # change to one-hot where male gender driver == 1
     df.driver_gender = np.where(df.driver_gender == 'Male', 1,
                                                     df.driver_gender)
     df.driver_gender = np.where(df.driver_gender == 'Female', 0,
                                                     df.driver_gender)
     # change dtype to int and rename
-    df.driver_gender = df.driver_gender.astype('int')
     df = df.rename(columns={'driver_gender':'driver_male'})
 
     return df
@@ -259,7 +256,7 @@ def clean_year(df):
     '''
 
     Takes existing vehicle manufactured year and removes non numerical
-    values. Replaces value with -1 for vehicles without known
+    values. Replaces value with NaN for vehicles without known
     manufacutring year for later imputation or other handling.
 
     '''
@@ -267,12 +264,10 @@ def clean_year(df):
     # pull numerical, four digit vehicle manufacture years
     df.car_year = df.car_year.apply(lambda row: re.sub(r'\s?(\d+)(.0)?',
                                                        r'\1', str(row)))
-    # set mislabeled and unknown years as -1
-    df.car_year = df.car_year.apply(lambda row: -1 if row == 'nan'
+    # set mislabeled and unknown years as NaN
+    df.car_year = df.car_year.apply(lambda row: np.nan if row == 'nan'
                                                    or row == '0'
                                                    else row)
-    # # convert data type to integer
-    df.car_year = df.car_year.astype('int')
     # # rename column
     df = df.rename(columns={'car_year':'vehicle_year'})
     
@@ -380,7 +375,7 @@ def make_vehicle_dmg_zone(df):
                             lambda row: re.search(pattern, row).group(1))
     # create column for impact zone as described in docstring
     df['damage_zone'] = np.where(impact_type\
-                            .isin(['VX', 'MC']), 0, -1)
+                            .isin(['VX', 'MC']), 0, np.nan)
     df['damage_zone'] = np.where(impact_type\
                             .isin(['FL','FR','FC','FD']), 1, df.damage_zone)
     df['damage_zone'] = np.where(impact_type\
@@ -401,7 +396,6 @@ def make_vehicle_dmg_zone(df):
                             .isin(['TP','L&T','R&T','VB']), 9, df.damage_zone)
     df['damage_zone'] = np.where(impact_type\
                             .isin(['MC']), 10, df.damage_zone)
-    df.damage_zone = df.damage_zone.astype('int')
 
     return df
 
@@ -670,7 +664,23 @@ def clean_weather_cats(df):
 #################### Final Data Prep ####################
 
 
-def prep_collision_data():
+def clean_dtypes(df):
+    '''
+    '''
+
+    # set driver_age as integer dtype
+    df.driver_age = df.driver_age.astype('int')
+    # set driver_gender as integer dtype
+    df.driver_male = df.driver_male.astype('int')
+    # set car_year as integer dtype
+    df.vehicle_year = df.vehicle_year.astype('int')
+    # set damage_zone as integer dtype
+    df.damage_zone = df.damage_zone.astype('int')
+
+    return df
+
+
+def clean_collision_data(dropna=True):
     '''
     '''
 
@@ -693,5 +703,38 @@ def prep_collision_data():
     cols = df.columns.tolist()
     cols.sort()
     df = df[cols]
+    #
+    if dropna == True:
+        # drop null values
+        df = df.dropna()
+        # convert to appropraite data types
+        df = clean_dtypes(df)
 
     return df
+
+
+def split_data(df):
+    '''
+    '''
+
+    #
+    train, test = train_test_split(df, test_size=0.2, random_state=19,
+                                            stratify=df.injury_class)
+    X_train = train.drop(columns=['injury_class', 'injury_crash_total'])
+    X_test = test.drop(columns=['injury_class', 'injury_crash_total'])
+    y_train = train[['injury_class', 'injury_crash_total']]
+    y_test = test[['injury_class', 'injury_crash_total']]
+
+    return X_train, y_train, X_test, y_test
+
+
+def collision_data(dropna=True):
+    '''
+    '''
+
+    #
+    df = clean_collision_data(dropna=dropna)
+    #
+    X_train, y_train, X_test, y_test = split_data(df)
+
+    return X_train, y_train, X_test, y_test
