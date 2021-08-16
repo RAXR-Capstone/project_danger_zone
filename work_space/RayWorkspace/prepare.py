@@ -28,8 +28,9 @@ def misc_prep(df):
     # convert crash_date to datetime dtype and 24-hour clock
     df.crash_date =  df.crash_date.apply(lambda row: \
                      pd.to_datetime(row).strftime('%m/%d/%Y %H:%M'))
+    df.crash_date =  pd.to_datetime(df.crash_date)
     # drop columns
-    df = df.drop(columns=['case_id', 'crash_city',
+    df = df.drop(columns=['index', 'Unnamed: 0', 'case_id', 'crash_city',
                           'police_dept', 'crash_location',
                           'driver_residence', 'driver_insured'])
     # remove mph and convert speed_limit column to integer data type
@@ -38,9 +39,12 @@ def misc_prep(df):
                                     .group(1)).astype('int')
     # rename columns
     rename_dict = {'accident_factor':'fault_narrative',
-                   'at_fault':'fault_reported',
-                   'num_of_injuries':'injury_count_total',
-                   'speed_limit':'speed_limit_mph'}
+                   'at_fault':'fault_class',
+                   'num_of_injuries':'injury_crash_total',
+                   'speed_limit':'factors_spd_lmt_mph',
+                   'car_contained_injury':'injury_class',
+                   'num_of_vehicles':'crash_vehicle_count',
+                   'num_of_occupants':'crash_occupant_count'}
     df = df.rename(columns=rename_dict)
     
     return df
@@ -155,11 +159,14 @@ def prep_driver_data(df):
 
     '''
 
+    # lowercase state value and strip terminal whitespace
+    df.driver_license_state = df.driver_license_state\
+                                .apply(lambda row: str(row).lower().strip())
     # set DL state as Texas, Other, or NaN
     df.driver_license_state = np.where(df.driver_license_state.isin(\
-                    ['UNKNOWN', 'Unknown']), np.nan, df.driver_license_state)
+                        ['unknown', 'nan']), np.nan, df.driver_license_state)
     df.driver_license_state = np.where(df.driver_license_state.isin(\
-                    ['texas', np.nan]), df.driver_license_state, 'other')
+                        ['texas', np.nan]), df.driver_license_state, 'other')
     # rename column
     df = df.rename(columns={'driver_license_state':'dl_state'})
     # use function to change gender to one-hot
@@ -339,31 +346,31 @@ def make_vehicle_dmg_zone(df):
     pattern = r'^(\S+){1,4}.+'
     # create series of impact types
     impact_type = df.driver_car_damage.apply(
-                    lambda row: re.search(pattern, row).group(1))
+                            lambda row: re.search(pattern, row).group(1))
     # create column for impact zone as described in docstring
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['VX', 'MC']), 0, -1)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['FL','FR','FC','FD']), 1, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['BL','BR','BC','BD']), 2, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['LFQ']), 3, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['LP', 'LD', 'L&T']), 4, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['LBQ']), 5, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['RFQ']), 6, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['RD', 'RP', 'R&T']), 7, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['RBQ']), 8, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['TP','L&T','R&T','VB']), 9, df.vehicle_dmg_zone)
-    df['vehicle_dmg_zone'] = np.where(impact_type\
-                        .isin(['MC']), 10, df.vehicle_dmg_zone)
-    df.vehicle_dmg_zone = df.vehicle_dmg_zone.astype('int')
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['VX', 'MC']), 0, -1)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['FL','FR','FC','FD']), 1, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['BL','BR','BC','BD']), 2, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['LFQ']), 3, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['LP', 'LD', 'L&T']), 4, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['LBQ']), 5, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['RFQ']), 6, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['RD', 'RP', 'R&T']), 7, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['RBQ']), 8, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['TP','L&T','R&T','VB']), 9, df.damage_zone)
+    df['damage_zone'] = np.where(impact_type\
+                            .isin(['MC']), 10, df.damage_zone)
+    df.damage_zone = df.damage_zone.astype('int')
 
     return df
 
@@ -391,12 +398,12 @@ def make_dmg_type_columns(df):
     impact_type = df.driver_car_damage.apply(
                     lambda row: re.search(pattern, row).group(1))
     # create columns for boolean of damage types
-    df['concentrated_damage'] = np.where(impact_type.isin(['FC', 'BC']), 1, 0)
-    df['distributed_damage'] = np.where(impact_type.isin(
+    df['damage_concentrated'] = np.where(impact_type.isin(['FC', 'BC']), 1, 0)
+    df['damage_distributed'] = np.where(impact_type.isin(
                                             ['FD', 'BD', 'LD', 'RD']), 1, 0)
-    df['rollover_damage'] = np.where(impact_type.isin(
+    df['damage_rollover'] = np.where(impact_type.isin(
                                             ['TP', 'L&T', 'R&T']), 1, 0)
-    df['vehicle_burned'] = np.where(impact_type.isin(['VB']), 1, 0)
+    df['damage_burned'] = np.where(impact_type.isin(['VB']), 1, 0)
 
     return df
 
@@ -598,7 +605,7 @@ def clean_traffic_cats(df):
                                 if row == 'nan'
                                 else row)
     # rename column
-    df = df.rename(columns={'traffic_conditions':'conditions_road'})
+    df = df.rename(columns={'traffic_conditions':'factors_road'})
 
     return df
 
@@ -624,7 +631,7 @@ def clean_weather_cats(df):
                                 if row == 'nan'
                                 else row)
     # rename column
-    df = df.rename(columns={'weather_conditions':'conditions_weather'})
+    df = df.rename(columns={'weather_conditions':'factors_weather'})
     
     return df
 
@@ -651,5 +658,9 @@ def prep_collision_data():
     # prep road conditions
     df = clean_traffic_cats(df)
     df = clean_weather_cats(df)
+    # sort columns alphabetically
+    cols = df.columns.tolist()
+    cols.sort()
+    df = df[cols]
 
     return df
