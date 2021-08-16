@@ -34,13 +34,15 @@ def misc_prep(df):
                      pd.to_datetime(row).strftime('%m/%d/%Y %H:%M'))
     df.crash_date =  pd.to_datetime(df.crash_date)
     # drop columns
-    df = df.drop(columns=['case_id', 'crash_city',
+    df = df.drop(columns=['case_id', 'crash_city', 'crash_url',
                           'police_dept', 'crash_location',
                           'driver_residence', 'driver_insured'])
     # remove mph and convert speed_limit column to integer data type
     df.speed_limit = df.speed_limit.apply(lambda row:
                                           re.search(r'(\D?\d{1,2}\s)', row)\
                                     .group(1)).astype('int')
+    # drop observations without latitude value
+    df = df[df.crash_latitude != 0]
     # rename columns
     rename_dict = {'accident_factor':'fault_narrative',
                    'at_fault':'fault_class',
@@ -48,7 +50,9 @@ def misc_prep(df):
                    'speed_limit':'factors_spd_lmt_mph',
                    'car_contained_injury':'injury_class',
                    'num_of_vehicles':'crash_vehicle_count',
-                   'num_of_occupants':'crash_occupant_count'}
+                   'num_of_occupants':'crash_occupant_count',
+                   'car_airbags_deployed':'damage_airbag',
+                   'occupants_in_car':'vehicle_occupant_count'}
     df = df.rename(columns=rename_dict)
     
     return df
@@ -302,6 +306,26 @@ def clean_color(df):
     return df
 
 
+def clean_type(df):
+    '''
+    '''
+
+    #
+    df.car_type = df.car_type.apply(lambda row: str(row).strip().lower())
+    non_pass = ['incomplete', 'trailer', 'low']
+    df.car_type = df.car_type.apply(lambda row: row
+                                    if all(x not in row for x in non_pass)
+                                    else 'non-passenger')
+    df.car_type = np.where(
+                        df.car_type == 'multipurpose passenger vehicle (mpv)',
+                        'mpv', df.car_type)
+    df.car_type = np.where(df.car_type == 'passenger car', 'car', df.car_type)
+    df.car_type = np.where(df.car_type == 'nan', np.nan, df.car_type)
+    df = df.rename(columns={'car_type':'vehicle_type'})
+
+    return df
+
+
 def prep_vehicle_data(df):
     '''
 
@@ -319,6 +343,8 @@ def prep_vehicle_data(df):
     df = clean_year(df)
     # use function to consolidate and clean vehicle color
     df = clean_color(df)
+    #
+    df = clean_type(df)
 
     return df
 
