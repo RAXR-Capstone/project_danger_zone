@@ -227,7 +227,7 @@ for i in range(len(links)):
             
             
         #use the vin number to find the vehicle type form the vin website api
-            url = 'https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/';
+            vin_url = 'https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/';
             post_fields = {'format': 'json', 'data': drivercarVIN};
             r = requests.post(url, data=post_fields);
             VehicleType = r.json()['Results'][0]['VehicleType']
