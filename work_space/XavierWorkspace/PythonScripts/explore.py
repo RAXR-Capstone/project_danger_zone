@@ -5,6 +5,7 @@ import seaborn as sns
 import math
 import itertools
 
+
 def get_distribution(df):
     for i in df:
         plt.figure(figsize=(16,9))
@@ -15,11 +16,23 @@ def get_distribution(df):
         plt.show()
         
 def compare_to_target(df, target):
+    
+
     for i in df:
-        plt.figure(figsize=(8,3))
-        plt.title('{} vs {}'.format(i,target))
-        sns.scatterplot(data=df , y = target, x = i)
-        plt.show()
+        if  df[target].dtype == np.float64:
+            plt.figure(figsize=(16,9))
+            plt.title('{} vs {}'.format(i,target))
+            sns.scatterplot(data=df , y = target, x = i)
+            plt.show()
+        else:
+            plt.figure(figsize=(16,9))
+            plt.title('{} Distribution'.format(i))
+            plt.xlabel(i)
+            plt.ylabel('count')
+            sns.histplot(data=df , x=i, hue=target)
+            plt.show()
+        
+            
         
 def plot_variable_pairs(df, cont_vars = 2):
     combos = itertools.combinations(df,cont_vars)

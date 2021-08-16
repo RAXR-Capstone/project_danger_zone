@@ -720,8 +720,8 @@ def split_data(df):
     #
     train, test = train_test_split(df, test_size=0.2, random_state=19,
                                             stratify=df.injury_class)
-    X_train = train.drop(columns=['injury_class', 'injury_crash_total'])
-    X_test = test.drop(columns=['injury_class', 'injury_crash_total'])
+    X_train = train
+    X_test = test
     y_train = train[['injury_class', 'injury_crash_total']]
     y_test = test[['injury_class', 'injury_crash_total']]
 
