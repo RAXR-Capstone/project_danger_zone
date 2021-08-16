@@ -10,6 +10,10 @@ import re
 import unicodedata
 import nltk
 
+# hide warnings
+import warnings
+warnings.filterwarnings("ignore")
+
 
 #################### Prep MVC Data ####################
 
@@ -30,7 +34,7 @@ def misc_prep(df):
                      pd.to_datetime(row).strftime('%m/%d/%Y %H:%M'))
     df.crash_date =  pd.to_datetime(df.crash_date)
     # drop columns
-    df = df.drop(columns=['index', 'Unnamed: 0', 'case_id', 'crash_city',
+    df = df.drop(columns=['case_id', 'crash_city',
                           'police_dept', 'crash_location',
                           'driver_residence', 'driver_insured'])
     # remove mph and convert speed_limit column to integer data type
@@ -257,14 +261,15 @@ def clean_year(df):
     '''
     
     # pull numerical, four digit vehicle manufacture years
-    df.car_year = df.car_year.apply(lambda row: re.sub(r'\s?(\d{4})(.0)?',
-                                                        r'\1', str(row)))
+    df.car_year = df.car_year.apply(lambda row: re.sub(r'\s?(\d+)(.0)?',
+                                                       r'\1', str(row)))
     # set mislabeled and unknown years as -1
-    df.car_year = df.car_year.apply(lambda row: re.sub(r'(\s*[A-Z\sa-z]+\s*)',
-                                                            r'-1', str(row)))
-    # convert data type to integer
+    df.car_year = df.car_year.apply(lambda row: -1 if row == 'nan'
+                                                   or row == '0'
+                                                   else row)
+    # # convert data type to integer
     df.car_year = df.car_year.astype('int')
-    # rename column
+    # # rename column
     df = df.rename(columns={'car_year':'vehicle_year'})
     
     return df
@@ -644,7 +649,7 @@ def prep_collision_data():
     '''
 
     # read in csv
-    df = pd.read_csv('all_accident_data.csv')
+    df = pd.read_csv('accident_data.csv')
     # perform initial, misc prep work
     df = misc_prep(df)
     # prepare driver data
