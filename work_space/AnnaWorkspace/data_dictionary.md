@@ -194,8 +194,9 @@
 | Column Name               | Description                                                                   |
 |---------------------------|-------------------------------------------------------------------------------|
 | accident_contained_injury | value of '1' if the accident had at least 1 person injured, or '0' if not     |
-| crash_date                | date and time the accident occurred                                           |
+| crash_date                | the date and time the accident occurred                                       |
 | crash_day_of_week         | the named day of the week the accident occurred on                            |
+| crash_hour                | the hour in which the accident occurred (24 hour clock)                       |
 | crash_id                  | police report crash identification number                                     |
 | crash_latitude            | the accident location's latitude                                              |
 | crash_location            | street address of the accident                                                |
@@ -237,4 +238,6 @@
 | vehicle_occupant_count    | the number of occupants in the vehicle                                        |
 | vehicle_type              | the type of vehicle                                                           |
 | vehicle_year              | the vehicle's released year                                                   |
+
+
 
