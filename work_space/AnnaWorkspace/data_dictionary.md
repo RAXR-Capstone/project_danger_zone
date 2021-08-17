@@ -194,7 +194,7 @@
 | Column Name               | Description                                                                   |
 |---------------------------|-------------------------------------------------------------------------------|
 | accident_contained_injury | value of '1' if the accident had at least 1 person injured, or '0' if not     |
-| crash_date                | when the accident occurred in MM/DD/YY HH:MM (AM/PM) format                   |
+| crash_date                | date and time the accident occurred                                           |
 | crash_day_of_week         | the named day of the week the accident occurred on                            |
 | crash_id                  | police report crash identification number                                     |
 | crash_latitude            | the accident location's latitude                                              |
