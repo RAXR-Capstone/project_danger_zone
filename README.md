@@ -17,17 +17,17 @@ San Antonio is the 7th most populated, and one of the fastest growing cities in 
 
 1.   [Project Overview              ](#1-project-overview)\
 1a.   [Project Description          ](#1a-project-description)\
-1b.   [Project Deliverables         ](#1b-project-deliverables)\
+1b.   [Project Deliverables         ](#1b-project-deliverables)
 
 
 2.  [Project Summary                ](#2-project-summary)\
 2a.   [Goals                        ](#2a-goals)\
 2b.   [Initial Thoughts & Hypothesis](#2b-initial-thoughts--hypothesis)\
-2c.   [Findings & Next Steps        ](#2c-findings--next-steps)\
+2c.   [Findings & Next Steps        ](#2c-findings--next-steps)
 
 3. [Data Context                 ](#c-data-context)\
 3a.   [About Our Data            ](#3a-about-our-data)\
-3b.   [Data Dictionary           ](#3b-data-dictionary)\
+3b.   [Data Dictionary           ](#3b-data-dictionary)
 
 4.  [Pipeline                     ](#4-pipeline)\
 4a.   [Project Planning             ](#4a-project-planning)\
@@ -35,11 +35,11 @@ San Antonio is the 7th most populated, and one of the fastest growing cities in 
 4c.   [Data Preparation             ](#4c-data-preparation)\
 4d.   [Data Exploration             ](#4d-data-exploration)\
 4e.   [Modeling & Evaluation        ](#4e-modeling--evaluation)\
-4f.   [Product Delivery             ](#4f-product-delivery)\
+4f.   [Product Delivery             ](#4f-product-delivery)
 
-E.   [Modules                      ](#e-modules)\
+E.   [Modules                      ](#e-modules)
 
-F.  [Project Reproduction         ](#f-project-reproduction)\
+F.  [Project Reproduction         ](#f-project-reproduction)
 
 <br>
 
