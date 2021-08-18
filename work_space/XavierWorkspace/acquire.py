@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import re
-import requests 
+import requests, json
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import TimeoutException
@@ -15,10 +15,17 @@ import skip
 
 
 
+
 '''
 Date: August 13, 2021
 Author: Xavier Carter
-This aquire function is script using the selinium webscraper and a chrome driver extention in order to extract the information found within the web page and stores it into a csv file. The webscraper takes in a list of links and parses through the list of links in order to know which web browser to open and scrape. If for any reason the link is broken, then the skip.py script is ran and  removes the broken link from the list, allowing to continue without breaking the loop. of for any reason the webscraper fin allowing you to continue where left off.
+This aquire function is script using the selinium webscraper and a 
+chrome driver extention in order to extract the information found within the 
+web page and stores it into a csv file. The webscraper takes in a list of 
+links and parses through the list of links in order to know which web browser to open and scrape. 
+If for any reason the link is broken, then the skip.py script is ran and  
+removes the broken link from the list, allowing to continue without breaking the loop. 
+of for any reason the webscraper fin allowing you to continue where left off.
 
 '''
 
@@ -130,7 +137,8 @@ for i in range(len(links)):
                 numberofOccupants += occupant
     
         
-        #check to see if the table contains any red circles, if the red circle exists and contains the airbag picture, then at least one airbag was deployed. if not, then the airbags were not deployed.
+        #check to see if the table contains any red circles, if the red circle exists and contains the airbag picture, then at least one airbag was deployed.
+        #if not, then the airbags were not deployed.
             bag_deployed = 0
             try:
                 red_circles = container[i].find_element_by_class_name('circle.red').find_elements_by_tag_name('img')
@@ -227,9 +235,9 @@ for i in range(len(links)):
             
             
         #use the vin number to find the vehicle type form the vin website api
-            vin_url = 'https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/';
+            vin_url = 'https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVINValuesBatch/'
             post_fields = {'format': 'json', 'data': drivercarVIN};
-            r = requests.post(url, data=post_fields);
+            r = requests.post(vin_url, data=post_fields);
             VehicleType = r.json()['Results'][0]['VehicleType']
 
         # done within this indnent brecause each car in the accident
