@@ -675,7 +675,7 @@ def prep_collision_data():
     '''
 
     # read in csv
-    df = pd.read_csv('accident_data.csv')
+    df = pd.read_csv('aug_accident_data.csv')
     # perform initial, misc prep work
     df = misc_prep(df)
     # prepare driver data
