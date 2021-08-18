@@ -17,8 +17,11 @@ San Antonio is the 7th most populated, and one of the fastest growing cities in 
 ---
 
 1.   [Project Overview              ](#1-project-overview)
+
 1a.   [Project Description          ](#1a-project-description)
+
 1b.   [Project Deliverables         ](#1b-project-deliverables)
+
 
 2.  [Project Summary                ](#2-project-summary)
 2a.   [Goals                        ](#2a-goals)
@@ -26,8 +29,8 @@ San Antonio is the 7th most populated, and one of the fastest growing cities in 
 2c.   [Findings & Next Steps        ](#2c-findings--next-steps)
 
 3. [Data Context                 ](#c-data-context)
-3a.   [About Our Data            ](#1-about-our-data)
-3b.   [Data Dictionary           ](#2-data-dictionary)
+3a.   [About Our Data            ](#3a-about-our-data)
+3b.   [Data Dictionary           ](#3b-data-dictionary)
 
 4.  [Pipeline                     ](#4-pipeline)
 4a.   [Project Planning             ](#4a-project-planning)
