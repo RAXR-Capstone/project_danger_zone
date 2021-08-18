@@ -713,21 +713,6 @@ def clean_collision_data(dropna=True):
     return df
 
 
-def split_data(df):
-    '''
-    '''
-
-    #
-    train, test = train_test_split(df, test_size=0.2, random_state=19,
-                                            stratify=df.injury_class)
-    X_train = train.drop(columns=['injury_class', 'injury_crash_total'])
-    X_test = test.drop(columns=['injury_class', 'injury_crash_total'])
-    y_train = train[['injury_class', 'injury_crash_total']]
-    y_test = test[['injury_class', 'injury_crash_total']]
-
-    return X_train, y_train, X_test, y_test
-
-
 def collision_data(dropna=True):
     '''
     '''
@@ -735,6 +720,7 @@ def collision_data(dropna=True):
     #
     df = clean_collision_data(dropna=dropna)
     #
-    X_train, y_train, X_test, y_test = split_data(df)
+    train, test = train_test_split(df, test_size=0.2, random_state=19,
+                                            stratify=df.injury_class)
 
-    return X_train, y_train, X_test, y_test
+    return train, test
