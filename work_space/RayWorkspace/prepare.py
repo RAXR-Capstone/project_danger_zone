@@ -14,6 +14,9 @@ import nltk
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 import datetime as dt
+from kmodes.kmodes import KModes
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 
 # hide warnings
 import warnings
@@ -698,6 +701,84 @@ def clean_weather_cats(df):
     return df
 
 
+#################### Prep MVC Clusters ####################
+
+
+def create_kmode_clusters(train, test, n, cluster_name, var=[]):
+    '''
+
+    takes in train, test sets, the number of clusters to make, variable names,
+    and a desired cluster column name and will use kmode to create the cluster
+    groups. It will also append the predicted clusters to the train and test
+    dataframes and return them back
+
+    '''
+
+    #initialize kmode 
+    kmode = KModes(n_clusters=n, init="random", n_init=5, verbose=0,
+                                                    random_state=19)
+    
+    #make clusters for train
+    clusters = kmode.fit_predict(train[var])
+    #add to train set
+    train[cluster_name] = clusters
+    
+    #make clusters for test set
+    clusters_test = kmode.predict(test[var])
+    #add to test set
+    test[cluster_name] = clusters_test
+
+    return train, test
+
+
+def create_kmeans_clusters(train, test, n, cluster_name, var=[]):
+    '''
+    '''
+
+    #initialize kmode 
+    kmeans = KMeans(n_clusters=n)
+    
+    # scaled data for kmeans
+    scaler = StandardScaler()
+    scaler.fit(train[var])
+    train_scaled = pd.DataFrame(scaler.transform(train[var]),
+                                columns=train[var].columns,
+                                index=train[var].index)
+    test_scaled = pd.DataFrame(scaler.transform(test[var]),
+                               columns=test[var].columns,
+                               index=test[var].index)
+    # make clusters for train
+    clusters = kmeans.fit_predict(train_scaled)
+    #add to train set
+    train[cluster_name] = clusters
+    #make clusters for test set
+    clusters_test = kmeans.predict(test_scaled)
+    #add to test set
+    test[cluster_name] = clusters_test
+
+    return train, test
+
+
+def create_mvc_clusters(train, test):
+    '''
+    ''' 'factors_spd_lmt_mph', 'fault_yield', 'vehicle_occupant_count'
+
+    #
+    train, test = create_kmode_clusters(train, test, 4,
+                                    cluster_name='damage_air',
+                                    var=['damage_zone','damage_airbag'])
+    #
+    train, test = create_kmode_clusters(train, test, 4,
+                                    cluster_name='speed_speed_lm',
+                                    var=['fault_speed','factors_spd_lmt_mph'])
+    train, test = create_kmeans_clusters(train, test, 4,
+                                    cluster_name='speed_yield_occu',
+                                    var=['factors_spd_lmt_mph', 'fault_yield',
+                                                    'vehicle_occupant_count'])
+
+    return train, test
+
+
 #################### Final Data Prep ####################
 
 
@@ -752,10 +833,6 @@ def clean_collision_data(dropna=True):
         df = clean_dtypes(df)
     #
     df = feature_extraction(df)
-    # sort columns alphabetically
-    cols = df.columns.tolist()
-    cols.sort()
-    df = df[cols]
 
     return df
 
@@ -769,5 +846,15 @@ def collision_data(dropna=True):
     #
     train, test = train_test_split(df, test_size=0.2, random_state=19,
                                             stratify=df.injury_class)
+    #
+    train, test = create_mvc_clusters(train, test)
+    # sort train columns alphabetically
+    cols = train.columns.tolist()
+    cols.sort()
+    train = train[cols]
+    # sort test columns alphabetically
+    cols = test.columns.tolist()
+    cols.sort()
+    test = test[cols]
 
     return train, test
