@@ -38,8 +38,7 @@ def misc_prep(df):
     df.crash_date =  pd.to_datetime(df.crash_date)
     # drop columns
     df = df.drop(columns=['case_id', 'crash_city', 'crash_url',
-                          'police_dept', 'crash_location',
-                          'driver_residence', 'driver_insured'])
+                          'police_dept','driver_residence', 'driver_insured'])
     # remove mph and convert speed_limit column to integer data type
     df.speed_limit = df.speed_limit.apply(lambda row:
                                           re.search(r'(\D?\d{1,2}\s)', row)\
@@ -560,13 +559,13 @@ def create_fault_narrative_cols(df):
     
     df = lang_prep_factor_col(df)
     # create boolean col for "distraction" cause
-    dist = ['inatt', 'distr', 'cell']
+    dist = ['inatt', 'distr', 'cell','phon']
     df['fault_distraction'] = df.apply(
                                 lambda row: 1
                                 if any(x in row.fault_narrative for x in dist)
                                 else 0, axis=1)
     # create boolean col for "meaneuver" related cause
-    manu = ['lane','turn','follo','pas','back','evas']
+    manu = ['lane','turn','follo','pas','back','evas','manu']
     df['fault_maneuver'] = df.apply(
                                 lambda row: 1
                                 if any(x in row.fault_narrative for x in manu)
@@ -577,13 +576,13 @@ def create_fault_narrative_cols(df):
                                 if 'speed' in row.fault_narrative
                                 else 0, axis=1)
     # create boolean col for intoxication realted causes
-    intx = ['drink', 'infl', 'medi']
+    intx = ['drink', 'infl', 'medi','alcho','drunk']
     df['fault_intoxication'] = df.apply(
                                 lambda row: 1
                                 if any(x in row.fault_narrative for x in intx)
                                 else 0, axis=1)
     # create boolean col for fatigue realted causes
-    fati = ['sleep', 'fatig', 'ill']
+    fati = ['sleep', 'fatig', 'ill','tired']
     df['fault_fatigue'] = df.apply(
                                 lambda row: 1
                                 if any(x in row.fault_narrative for x in fati)
@@ -699,6 +698,12 @@ def clean_collision_data(dropna=True):
     # prep road conditions
     df = clean_traffic_cats(df)
     df = clean_weather_cats(df)
+    #annas date functions go here
+    df.crash_date = pd.to_datetime(df.crash_date)
+    df['crash_time'] = df['crash_date'].dt.time
+    df['crash_hour'] = df.crash_date.apply(lambda x: x.hour)
+    df.crash_hour.astype(int)
+    df['crash_day_of_week'] = df.crash_date.apply(lambda x: x.day_name())
     # sort columns alphabetically
     cols = df.columns.tolist()
     cols.sort()

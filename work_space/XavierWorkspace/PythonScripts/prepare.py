@@ -707,6 +707,13 @@ def prep_collision_data():
     df = clean_traffic_cats(df)
     df = clean_weather_cats(df)
     # sort columns alphabetically
+    #annas date functions go here
+    df.crash_date = pd.to_datetime(df.crash_date)
+    df['crash_time'] = df['crash_date'].dt.time
+    df['crash_hour'] = df.crash_date.apply(lambda x: x.hour)
+    df.crash_hour.astype(int)
+    df['crash_day_of_week'] = df.crash_date.apply(lambda x: x.day_name())
+    df.accident_contained_injury.fillna(0, inplace=True)
     cols = df.columns.tolist()
     cols.sort()
     df = df[cols]
