@@ -9,6 +9,7 @@ import re
 # import word cleaning tools
 import unicodedata
 import nltk
+from sklearn.preprocessing import RobustScaler, MinMaxScaler, StandardScaler
 
 # hide warnings
 import warnings
@@ -675,7 +676,7 @@ def prep_collision_data():
     '''
 
     # read in csv
-    df = pd.read_csv('aug_accident_data.csv')
+    df = pd.read_csv('accident_data_final.csv')
     # perform initial, misc prep work
     df = misc_prep(df)
     # prepare driver data
@@ -703,7 +704,88 @@ def anna_prep():
     df['crash_hour'] = df.crash_date.apply(lambda x: x.hour)
     df.crash_hour.astype(int)
     df['crash_day_of_week'] = df.crash_date.apply(lambda x: x.day_name())
-    df.loc[df.injury_count_total >0, "accident_contained_injury"] = 1
+    df.loc[df.injury_crash_total >0, "accident_contained_injury"] = 1
     df.accident_contained_injury.fillna(0, inplace=True)
     
     return df
+
+
+
+def split_X_y(train, test, target):
+    '''
+    Splits train, and test into a dataframe with independent variables
+    and a series with the dependent, or target variable. 
+    The function returns 2 dataframes and 2 series:
+    X_train (df) & y_train (series), X_test & y_test. 
+    '''
+
+        
+    # split train into X (dataframe, drop target) & y (series, keep target only)
+    X_train = train.drop(columns=[target])
+    y_train = train[target]
+    
+    # split test into X (dataframe, drop target) & y (series, keep target only)
+    X_test = test.drop(columns=[target])
+    y_test = test[target]
+    
+    return X_train, y_train, X_test, y_test
+
+
+def scale_data(train, test, scale_type = None, to_scale = None):
+    '''
+    returns scaled data of specified type into data frame, will
+    '''
+    train_copy = train.copy()
+    test_copy = test.copy()
+    
+    if to_scale == None:
+        return train_copy, test_copy
+    
+    else:
+        X_train = train_copy[to_scale]
+        X_test = test_copy[to_scale]
+        
+        
+        min_max_scaler = MinMaxScaler()
+        robust_scaler = RobustScaler()
+        standard_scaler = StandardScaler()
+        
+        min_max_scaler.fit(X_train)
+        robust_scaler.fit(X_train)
+        standard_scaler.fit(X_train)
+    
+        mmX_train_scaled = min_max_scaler.transform(X_train)
+        rX_train_scaled = robust_scaler.transform(X_train)
+        sX_train_scaled = standard_scaler.transform(X_train)
+    
+    
+        mmX_test_scaled = min_max_scaler.transform(X_test)
+        rX_test_scaled = robust_scaler.transform(X_test)
+        sX_test_scaled = standard_scaler.transform(X_test)
+    
+    
+        mmX_train_scaled = pd.DataFrame(mmX_train_scaled, columns=X_train.columns)
+        mmX_test_scaled = pd.DataFrame(mmX_test_scaled, columns=X_test.columns)
+
+        rX_train_scaled = pd.DataFrame(rX_train_scaled, columns=X_train.columns)
+        rX_test_scaled = pd.DataFrame(rX_test_scaled, columns=X_test.columns)
+
+
+        sX_train_scaled = pd.DataFrame(sX_train_scaled, columns=X_train.columns)
+        sX_test_scaled = pd.DataFrame(sX_test_scaled, columns=X_test.columns)
+    
+    
+    if scale_type == 'MinMax':
+        for i in mmX_train_scaled:
+            train_copy[i] = mmX_train_scaled[i].values
+            test_copy[i] = mmX_test_scaled[i].values
+    elif scale_type == 'Robust':
+        for i in rX_train_scaled:
+            train_copy[i] = rX_train_scaled[i].values
+            test_copy[i] = rX_test_scaled[i].values
+    elif scale_type == 'Standard':
+          for i in sX_train_scaled:
+            train_copy[i] = sX_train_scaled[i].values
+            test_copy[i] = sX_test_scaled[i].values
+    return train_copy, test_copy
+ 
