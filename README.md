@@ -1,4 +1,6 @@
 
+<img src="https://github.com/RAXR-Capstone/project_danger_zone/blob/master/work_space/Pictures/danger_banner.png">
+
 # The Danger Zone 
 Brought to you by data scientists:
  - Xavier Carter
