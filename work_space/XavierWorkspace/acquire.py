@@ -30,10 +30,16 @@ of for any reason the webscraper fin allowing you to continue where left off.
 '''
 
 
+
+
+
+
 options = webdriver.ChromeOptions()
 options.add_argument('--ignore-certificate-errors')
 options.add_argument('--ignore-ssl-errors')
 dir_path = os.path.dirname(os.path.realpath('chromedriver'))
+options.add_argument('--headless')
+options.add_argument('--disable-gpu') 
 chromedriver = dir_path + '/chromedriver'
 os.environ['webdriver.chrome.driver'] = chromedriver
 
@@ -50,7 +56,7 @@ for i in range(len(links)):
     list_of_dicts = []
     print(links.link[i])
     url = links.link[i]
-    driver = webdriver.Chrome(executable_path=chromedriver)     
+    driver = webdriver.Chrome(executable_path=chromedriver, chrome_options=options)     
     driver.get(url)
     
     try:
