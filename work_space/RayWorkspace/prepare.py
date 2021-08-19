@@ -11,6 +11,7 @@ import unicodedata
 import nltk
 
 # import data tools
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.model_selection import train_test_split
 import datetime as dt
 
@@ -20,6 +21,21 @@ warnings.filterwarnings("ignore")
 
 
 #################### Prep MVC Data ####################
+
+
+def encode_vehicle_type(df):
+    '''
+    '''
+
+    # make encoder object
+    enc = OneHotEncoder(sparse=False, drop='first')
+    # fit encoder and concat DataFrame with new columns
+    one_hots_vehicle_type = pd.DataFrame(enc.fit_transform(
+                                            df[['vehicle_type']]),
+                                            columns=enc.get_feature_names(),
+                                            index=df.index)
+
+    return df
 
 
 def misc_prep(df):
@@ -47,7 +63,7 @@ def misc_prep(df):
                                     .group(1)).astype('int')
     # drop observations without latitude value
     df = df[df.crash_latitude != 0]
-    # rename columns
+    # rename cols
     rename_dict = {'accident_factor':'fault_narrative',
                    'at_fault':'fault_class',
                    'num_of_injuries':'injury_crash_total',
@@ -58,7 +74,7 @@ def misc_prep(df):
                    'car_airbags_deployed':'damage_airbag',
                    'occupants_in_car':'vehicle_occupant_count'}
     df = df.rename(columns=rename_dict)
-    
+
     return df
 
 
@@ -697,6 +713,15 @@ def clean_dtypes(df):
     df.vehicle_year = df.vehicle_year.astype('int')
     # set damage_zone as integer dtype
     df.damage_zone = df.damage_zone.astype('int')
+    # encode vehicle type
+    df = encode_vehicle_type(df)
+    # rename columns
+    rename_dict = {'x0_car':'vehicle_car',
+                   'x0_motorcycle':'vehicle_mc',
+                   'x0_mpv':'vehicle_mpv',
+                   'x0_non-passenger':'vehicle_non_passenger',
+                   'x0_truck':'vehicle_truck'}
+    df = df.rename(columns=rename_dict)
 
     return df
 
