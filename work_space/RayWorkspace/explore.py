@@ -113,8 +113,8 @@ def classifier_scores(y_true, y_pred):
 |            ---------------------            |
 |---------------------------------------------|
 |                 Accuracy: {report_dict['accuracy']:>8.2%}          |
-|                Precision: {report_dict['1']['precision']:>8.2%}          |
-|                   Recall: {report_dict['1']['recall']:>8.2%}          |
+|                Precision: {report_dict['0']['precision']:>8.2%}          |
+|                   Recall: {report_dict['0']['recall']:>8.2%}          |
 |            Total Support: {report_dict['macro avg']['support']:>8}          |
 +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 ''')
