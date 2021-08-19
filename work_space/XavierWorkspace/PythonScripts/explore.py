@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
+import folium
 import math
 import itertools
 
@@ -51,4 +52,13 @@ def get_heatmap(df, target):
     heatmap.set_title('Feautures  Correlating with {}'.format(target))
     plt.show()
     return heatmap
+
+def plot_map():
+    m = folium.Map(location=[29.377711363953658, -98.4970935625])
+    mask = train.injury_class == 1
+    mask2 = train.injury_class == 0
+    for i in range(0,len(train[mask])):
+        folium.CircleMarker(location=[train[mask].iloc[i]['crash_latitude'], train[mask].iloc[i]['crash_longitude']], radius = 0.5, color='red').add_to(m)
+    for i in range(0,len(train[mask2])):
+    folium.CircleMarker(location=[train[mask2].iloc[i]['crash_latitude'], train[mask2].iloc[i]['crash_longitude']], radius = 0.5, color='blue').add_to(m)
 
