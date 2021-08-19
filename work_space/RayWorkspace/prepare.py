@@ -12,6 +12,7 @@ import nltk
 
 # import data tools
 from sklearn.model_selection import train_test_split
+import datetime as dt
 
 # hide warnings
 import warnings
@@ -58,6 +59,26 @@ def misc_prep(df):
                    'occupants_in_car':'vehicle_occupant_count'}
     df = df.rename(columns=rename_dict)
     
+    return df
+
+
+def feature_extraction(df):
+    '''
+    '''
+
+    #
+    df['crash_day'] = df.set_index('crash_date').index.day_name()
+    df['crash_hour'] = df.crash_date.dt.hour
+    df['driver_age_bin'] = pd.cut(df.driver_age, [16, 25, 35, 45, 60, 120])
+    df['vehicle_year_bin'] = pd.cut(df.vehicle_year,
+                                   bins=[1984, 1999, 2002,
+                                         2003, 2004, 2005,
+                                         2006, 2007, 2008,
+                                         2009, 2010, 2011,
+                                         2012, 2013, 2014,
+                                         2015, 2016, 2017,
+                                         2018, 2019, 2020, 2022])
+
     return df
 
 
@@ -577,7 +598,7 @@ def create_fault_narrative_cols(df):
                                 if 'speed' in row.fault_narrative
                                 else 0, axis=1)
     # create boolean col for intoxication realted causes
-    intx = ['drink', 'infl', 'medi']
+    intx = ['drink', 'infl', 'medi', 'alc']
     df['fault_intoxication'] = df.apply(
                                 lambda row: 1
                                 if any(x in row.fault_narrative for x in intx)
@@ -699,16 +720,17 @@ def clean_collision_data(dropna=True):
     # prep road conditions
     df = clean_traffic_cats(df)
     df = clean_weather_cats(df)
+    if dropna == True:
+        # drop null values
+        df = df.dropna()
+        # convert to appropriate data types
+        df = clean_dtypes(df)
+    #
+    df = feature_extraction(df)
     # sort columns alphabetically
     cols = df.columns.tolist()
     cols.sort()
     df = df[cols]
-    #
-    if dropna == True:
-        # drop null values
-        df = df.dropna()
-        # convert to appropraite data types
-        df = clean_dtypes(df)
 
     return df
 
