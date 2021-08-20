@@ -606,7 +606,7 @@ def create_fault_narrative_cols(df):
                                 if any(x in row.fault_narrative for x in dist)
                                 else 0, axis=1)
     # create boolean col for "meaneuver" related cause
-    manu = ['lane','turn','follo','pas','back','evas']
+    manu = ['lane','turn','follo','pas','back','evas','close']
     df['fault_maneuver'] = df.apply(
                                 lambda row: 1
                                 if any(x in row.fault_narrative for x in manu)
@@ -634,7 +634,11 @@ def create_fault_narrative_cols(df):
                                 lambda row: 1
                                 if any(x in row.fault_narrative for x in fati)
                                 else 0, axis=1)
-    
+    # create boolean col for doing unsafe action
+    df['fault_unsafe'] = df.apply(
+                                lambda row: 1
+                                if 'unsafe' in row.fault_narrative
+                                else 0, axis=1)
     return df
 
 
