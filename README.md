@@ -1,7 +1,7 @@
 
 <img src="https://github.com/RAXR-Capstone/project_danger_zone/blob/master/work_space/Pictures/danger_banner.png">
 
-# The Danger Zone 
+# Project Danger Zone 
 Brought to you by data scientists:
  - Xavier Carter
  - Robert Murphy
@@ -10,7 +10,7 @@ Brought to you by data scientists:
 <br>
 <br>
 
-San Antonio is the 7th most populated, and one of the fastest growing cities in the U.S.A. In Bexar County alone, there were nearly 50,000 car crashes in 2020. Of these, 16,780 were injured, 200 died, and most were preventable. With an increasing number of drivers on the roads, there is a recurring need to keep people safe. Using 2021 San Antonio car accident data, the Danger Zone project will look into features that are likely to cause casualties, so that insight can be delivered to entities such as TXDot, Bexar County Public Works, insurance companies, and the general public.
+San Antonio is the 7th most populated, and one of the fastest growing cities in the U.S.A. In Bexar County alone, there were nearly 50,000 car crashes in 2020. Of these, 16,780 were injured, and 200 died. With an increasing number of drivers on the roads, there is a recurring need to keep people safe. Using 2021 San Antonio car accident data, Project Danger Zone will look into features that are likely to cause casualties, so that insight can be delivered to entities such as TXDot, Bexar County Public Works, insurance companies, and the general public.
 
 <br>
 <br>
@@ -74,7 +74,7 @@ Using 2021 San Antonio car crash data, web scraped from [myaccident](www.myaccid
 
 #### 2a. Goals
 
-Our goal is to predict whether or not an injury was reported in a vehicle at the time of an accident. Our classification model should be able to beat the baseline score (assuming nobody reports injuries in every single vehicle after an accident.) We are hoping to find or create features that will help the model perform well.
+Our goal is to predict whether or not an injury was reported in a vehicle at the time of an accident. Our selected classification model will be evaluated with the most emphasis on recall. We want to catch as many actual reported injuries as we can. We are hoping to find or create features that will help the model perform well.
 
 #### 2b. Initial Thoughts & Hypothesis
 
@@ -100,13 +100,35 @@ $H$0: The area's speed limit does not affect whether injuries are reported.
 $H$A: The area's speed limit does affect whether injuries are reported.
 
 #### 2c. Findings & Next Steps
+ 
+- Most common accident type only involves 2 cars.
+- Each car contains 1 person majority of the time.
+- The most frequent accident cause is driver inattention, followed by distaction and faulty manuevers.
+- There is a variety of car makes and colors within the data set. White and black cars are the most commonly involved in recent accidents.
+- In the last 6 months, roads where the speed limit are 45 MPH, followed by 35, and 65, have the most accidents involved.
+- Cars followed by mpv(multi person vehicles ie. mini vans and crossovers) are involved in most accidents, followed by trucks
+- Variables that correlate to accident by themselves were whether the air bag deployed, and the vehicle occupant count
+- Many of the variables did not correlate alone, after clustering some of the variables together, we were able to find more correlation to the target variable
+- the clusters created took speed and damage into account to help when modeling 
+- Monday, Tuesday, Saturday early evening shows a decrease to injury rate before a sudden upward trend into the early hours of the following day
+- Wednesday, Thursday seem to be more consistently near the mean rate versus other days
+- Sunday early morning has the highest rate of traffic injuries throughout the data
+- In the visual percentages of hour of accident with injury percentages, there is a marked increased in 0300 hours to 21%. Using $x^2$ testing, there is shown to be a statistical difference in the to categories of hour and if injury occurs.
+- There is evidence to suggest that there is a difference in injuries reported during Fiesta
+- There is not evidence to suggest that there is a difference in injuries reported during Spurs games (home games)
+- There is evidence to suggest that there is a difference in injuries reported during July 4th (and more of these accidents are due to intoxication than other days)
 
-Exploration findings here
 
 model performance here
 <br>
 
-next steps here
+Next Steps:
+
+
+ - Reevaluate what type of car caused the damage zone
+ - Acquire seatbelt status of everyone in the vehicle
+ - Find more relationships between variables
+ - Individual street analysis
 
 <br>
 <br>
