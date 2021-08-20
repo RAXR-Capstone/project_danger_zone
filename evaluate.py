@@ -9,7 +9,7 @@ from scipy.stats import chi2_contingency, ttest_ind
 # import modeling tools
 from sklearn.model_selection import GridSearchCV
 from sklearn.feature_selection import RFE
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 
 
 #################### Explore Functions ####################
@@ -113,8 +113,11 @@ def classifier_scores(y_true, y_pred):
 |            ---------------------            |
 |---------------------------------------------|
 |                 Accuracy: {report_dict['accuracy']:>8.2%}          |
-|                Precision: {report_dict['0']['precision']:>8.2%}          |
-|                   Recall: {report_dict['0']['recall']:>8.2%}          |
+|                Precision: {report_dict['1']['precision']:>8.2%}          |
+|                   Recall: {report_dict['1']['recall']:>8.2%}          |
 |            Total Support: {report_dict['macro avg']['support']:>8}          |
 +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 ''')
+    Col_labels = ['Pred Non Injury', 'Pred Injury']
+    Row_labels = ['Actual non Injury', 'Actual Injury']
+    print(pd.DataFrame(confusion_matrix(y_true, y_pred), index=Row_labels, columns=Col_labels))
