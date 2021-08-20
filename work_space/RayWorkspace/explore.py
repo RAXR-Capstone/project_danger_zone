@@ -2,6 +2,7 @@
 
 # import standards
 import pandas as pd
+import re
 
 # import stats tools
 from scipy.stats import chi2_contingency, ttest_ind
@@ -10,6 +11,7 @@ from scipy.stats import chi2_contingency, ttest_ind
 from sklearn.model_selection import GridSearchCV
 from sklearn.feature_selection import RFE
 from sklearn.metrics import classification_report
+from sklearn.model_selection import cross_validate
 
 
 #################### Explore Functions ####################
@@ -100,6 +102,31 @@ def get_rfe_selected(X_train, y_train, estimator, n_features=None):
     return feat_df.iloc[:20]
 
 
+def cv_classifier_scores(estimator, X, y, cv=10, scoring=('accuracy', 'precision', 'recall')):
+    '''
+    '''
+    
+    # cross validate and return output to dict
+    perf_dict = cross_validate(estimator, X, y, scoring=scoring, cv=cv, n_jobs=5)
+    # assign mean of accuracies to variable
+    acc = perf_dict['test_accuracy'].mean()
+    # assign mean of precisions to variable
+    prc = perf_dict['test_precision'].mean()
+    # assign mean of recalls to variable
+    rec = perf_dict['test_recall'].mean()
+    classifier_name = re.search(r'(\w+)\(.+', str(estimator)).group(1)
+    # print table or performance
+    print(f'''
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
+ *** Cross Validation Report ***
++===============================+
+|       Accuracy:  {acc:<12.2%} |
+|      Precision:  {prc:<12.2%} |
+|         Recall:  {rec:<12.2%} |
++-------------------------------+
+  Type: {classifier_name}''')
+
+
 def classifier_scores(y_true, y_pred):
     '''
     '''
@@ -113,8 +140,8 @@ def classifier_scores(y_true, y_pred):
 |            ---------------------            |
 |---------------------------------------------|
 |                 Accuracy: {report_dict['accuracy']:>8.2%}          |
-|                Precision: {report_dict['0']['precision']:>8.2%}          |
-|                   Recall: {report_dict['0']['recall']:>8.2%}          |
+|                Precision: {report_dict['1']['precision']:>8.2%}          |
+|                   Recall: {report_dict['1']['recall']:>8.2%}          |
 |            Total Support: {report_dict['macro avg']['support']:>8}          |
 +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~+
 ''')
