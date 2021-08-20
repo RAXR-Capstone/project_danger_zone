@@ -1,7 +1,7 @@
 
 <img src="https://github.com/RAXR-Capstone/project_danger_zone/blob/master/work_space/Pictures/danger_banner.png">
 
-# Project Danger Zone 
+# [Project Danger Zone]()
 Brought to you by data scientists:
  - Xavier Carter
  - Robert Murphy
@@ -39,9 +39,11 @@ San Antonio is the 7th most populated, and one of the fastest growing cities in 
 4e.   [Modeling & Evaluation        ](#4e-modeling--evaluation)\
 4f.   [Product Delivery             ](#4f-product-delivery)
 
-E.   [Modules                      ](#e-modules)
+5.   [Modules                      ](#5-modules)
 
-F.  [Project Reproduction         ](#f-project-reproduction)
+6.  [Project Reproduction         ](#6-project-reproduction)
+
+7. [Ending Notes                  ](#7-ending-notes)
 
 <br>
 
@@ -277,7 +279,7 @@ Here is a data dictionary for our accident.csv
 <br>
 <br>
 
-### E. Modules
+### 5. Modules
 ---
 
  - wrangle.py = contains acquire and prepare functions used to retrieve and prepare the accident data for use.
@@ -287,7 +289,7 @@ Here is a data dictionary for our accident.csv
 <br>
 <br>
 
-### F. Project Reproduction
+### 6. Project Reproduction
 ---
 
 Recreate this project in a few easy steps:
@@ -297,6 +299,9 @@ Recreate this project in a few easy steps:
      - Download final_danger_zone.ipynb notebook
 
 <br>
+<br>
+
+### 7. Ending Notes
 
 Remember that you can do your part to protect yourself and others before an accident happens. 
  - Commute with care
