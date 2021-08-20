@@ -15,7 +15,7 @@ San Antonio is the 7th most populated, and one of the fastest growing cities in 
 <br>
 <br>
 
-### Table of Contents
+## Table of Contents
 
 1.   [Project Overview              ](#1-project-overview)\
 1a.   [Project Description          ](#1a-project-description)\
@@ -76,6 +76,8 @@ Using 2021 San Antonio car crash data, web scraped from [myaccident](www.myaccid
 
 Our goal is to predict whether or not an injury was reported in a vehicle at the time of an accident. Our selected classification model will be evaluated with the most emphasis on recall. We want to catch as many actual reported injuries as we can. We are hoping to find or create features that will help the model perform well.
 
+<br>
+
 #### 2b. Initial Thoughts & Hypothesis
 
 Ho: Vehicle year and whether an injury is reported is independent.\
@@ -98,6 +100,8 @@ Ha: What part of town the accident occurs in affects if the vehicle reports an i
 
 Ho: The area's speed limit does not affect whether injuries are reported.\
 Ha: The area's speed limit does affect whether injuries are reported.
+
+<br>
 
 #### 2c. Findings & Next Steps
  
@@ -141,6 +145,9 @@ Next Steps:
 This accident.csv was acquired from [www.myaccident.org]. We only took in accidents from Mid February - Mid August of 2021 that occurred in San Antonio, TX and surrounding areas. Every accident page will have the date, time, location, information of the cars, drivers, and cause as well as if they reported an injury, etc. 
 
 We did create new features based on existing ones. 
+
+<br>
+
 
 
 #### 3b. Data Dictionary
@@ -275,6 +282,7 @@ Here is a data dictionary for our accident.csv
 
  - wrangle.py = contains acquire and prepare functions used to retrieve and prepare the accident data for use.
  - explore.py = contains functions used to explore, visualize, and run statistical tests.
+ - evaluate.py = contains modeling related functions
 
 <br>
 <br>
@@ -283,11 +291,24 @@ Here is a data dictionary for our accident.csv
 ---
 
 Recreate this project in a few easy steps:
- - Download this repository or:
+ - Git clone this repository or:
+     - Download accident.csv
      - Download .py modules
      - Download final_danger_zone.ipynb notebook
-     - Download accident.csv
 
 <br>
+
+Remember that you can do your part to protect yourself and others before an accident happens. 
+ - Commute with care
+     - Drive carefully and be respectful to others.
+ - Always stay aware and focused
+     - Pay attention to your surroundings, minimize distractions, hands on the wheel, and keep your eyes on the road (plus mirrors!)
+ - Protect yourself, family, friends, and others
+     - Wear your seatbelt and maintain a safe distance between other vehicles. Don't forget to turn on your headlights at night.
+ - Don't drink and drive
+     - Find a designated driver
+     - Before major holidays, look out for potentially free tow and ride services offered in San Antonio in case you or someone you know could use it
+     - If possible, avoid driving late at night.  
+
 
 
