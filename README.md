@@ -1,7 +1,7 @@
 
 <img src="https://github.com/RAXR-Capstone/project_danger_zone/blob/master/work_space/Pictures/danger_banner.png">
 
-# [Project Danger Zone]()
+# Project Danger Zone
 Brought to you by data scientists:
  - Xavier Carter
  - Robert Murphy
@@ -317,3 +317,4 @@ Remember that you can do your part to protect yourself and others before an acci
 
 
 
+[Return to Top](#top)
