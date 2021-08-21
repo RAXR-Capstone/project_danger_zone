@@ -82,6 +82,8 @@ Our goal is to predict whether or not an injury was reported in a vehicle at the
 
 #### 2b. Initial Thoughts & Hypothesis
 
+
+
 Ho: Vehicle year and whether an injury is reported is independent.\
 Ha: Vehicle year and whether an injury is reported is not independent.
 
@@ -302,6 +304,7 @@ Recreate this project in a few easy steps:
 <br>
 
 ### 7. Ending Notes
+---
 
 Remember that you can do your part to protect yourself and others before an accident happens. 
  - Commute with care
