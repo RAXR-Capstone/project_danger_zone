@@ -17,11 +17,11 @@ img = mpimg.imread('work_space/Pictures/sa.png')
 
 def get_distribution(df):
     for i in df:
-        plt.figure(figsize=(16,9))
+        plt.figure(figsize=(20,9))
         plt.title('{} Distribution'.format(i))
         plt.xlabel(i)
         plt.ylabel('count')
-        df[i].astype(str).hist(grid = False, bins = 100)
+        sns.countplot(data=df, x=i)
         plt.show()
         
 def compare_to_target(df, target):
@@ -38,7 +38,7 @@ def compare_to_target(df, target):
             plt.title('{} Distribution'.format(i))
             plt.xlabel(i)
             plt.ylabel('count')
-            sns.histplot(data=df , x=i, hue=target)
+            sns.countplot(data=df , x=i, hue=target)
             plt.show()
         
             
