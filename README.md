@@ -243,7 +243,7 @@ Here is a data dictionary for our accident.csv
 #### 4b. Data Acquisition
 ✓ _Plan_ ➜ :open_book: **Acquire** ➜ ☐ _Prepare_ ➜ ☐ _Explore_ ➜ ☐ _Model_ ➜ ☐ _Deliver_
 
-- [x] Web scrape San Antonio accident data
+- [x] Web scrape San Antonio accident data from Feb 2021-Aug 2021
 - [x] Observe data structure
 - [x] Save it to a local .csv for use. 
 
@@ -273,11 +273,18 @@ Here is a data dictionary for our accident.csv
 
 - [x] Establish baseline prediction
 - [x] Create, fit, and predict with models
+- [x] Use GridsearchCV to find optimal hyperparameters
 - [x] Evaluate models with cross validation
+- [x] Emphasis on recall score
 
 #### 4f. Product Delivery
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ ✓ _Model_ ➜ :white_check_mark: **Deliver**
 - [x] Prepare Jupyter Notebook with thorough walk-through of the data science pipeline
+- [x] Review Panel I
+- [x] Review Panel II
+- [x] Review Panel III
+- [x] Recording of Presentation
+- [x] Live Presentation
 - [x] Share findings 
 - [x] Address next steps
 
