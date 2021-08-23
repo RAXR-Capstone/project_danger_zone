@@ -131,7 +131,9 @@ Surprisingly, weather (as most San Antonians claim have an affect) statistically
 - There is evidence to suggest that there is a difference in injuries reported during July 4th weekend (and more of these accidents are due to intoxication than other days)
 
 
-model performance here
+We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 61% recall. 
+Though it did not outperform the baseline's accuracy of 83%, the baseline predicted that nobody got hurt it any accident. Our model is able to predict correctly for 61% of vehicles with injuries.
+
 <br>
 
 Next Steps:
@@ -275,6 +277,7 @@ Here is a data dictionary for our accident.csv
 - [x] Create, fit, and predict with models
 - [x] Use GridsearchCV to find optimal hyperparameters
 - [x] Evaluate models with cross validation
+- [x] Find ways to handle imbalanced data
 - [x] Emphasis on recall score
 
 #### 4f. Product Delivery
