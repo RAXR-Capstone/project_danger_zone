@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 import datetime as dt
 from kmodes.kmodes import KModes
 from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import RobustScaler, MinMaxScaler, StandardScaler
 
 # hide warnings
 import warnings
@@ -28,6 +28,7 @@ warnings.filterwarnings("ignore")
 
 def encode_vehicle_type(df):
     '''
+    encode vehicle type into numeric data type
     '''
 
     # make encoder object
@@ -178,6 +179,7 @@ def clean_driver_age(df):
 
 def clean_driver_gender(df):
     '''
+    clean driver gender to driver_male column. 1 as male, 0 as female, null for unknown
     '''
 
     # replace "Unknown" gender with NaN
@@ -497,6 +499,8 @@ def prep_damage_data(df):
 
 def basic_clean(string):
     '''
+    basic_clean takes in a string and lowercases its contents, normalizes unicode characters,
+    and replaces anything that is not a letter, number, whitespace, or single quote with nothing
     '''
     
     # convert applicable characters to lowercase
@@ -514,6 +518,7 @@ def basic_clean(string):
 
 def tokenize(string):
     '''
+    tokenize will take in a string and tokenize all of the words in it
     '''
     
     # create tokenizer object
@@ -526,6 +531,7 @@ def tokenize(string):
 
 def remove_stopwords(string, extra_words=None, exclude_words=None):
     '''
+    takes in some text and removes stop words
     '''
     
     # create stopwords list
@@ -550,6 +556,7 @@ def remove_stopwords(string, extra_words=None, exclude_words=None):
 
 def lemmatize(string):
     '''
+    takes in a string and lemmatizes it
     '''
     
     # create lemmatizer object
@@ -737,6 +744,8 @@ def create_kmode_clusters(train, test, n, cluster_name, var=[]):
 
 def create_kmeans_clusters(train, test, n, cluster_name, var=[]):
     '''
+    takes in train and test sets, a desired cluster name, and the variables to cluster on.
+    will return clusters to both the train and test set
     '''
 
     #initialize kmode 
@@ -788,6 +797,7 @@ def create_mvc_clusters(train, test):
 
 def clean_dtypes(df):
     '''
+    fix data types into integers
     '''
 
     # set driver_age as integer dtype
@@ -862,3 +872,62 @@ def collision_data(dropna=True):
     test = test[cols]
 
     return train, test
+
+def scale_data(train, test, scale_type = None, to_scale = None):
+    '''
+    returns scaled data of specified type into data frame
+    '''
+    train_copy = train.copy()
+    test_copy = test.copy()
+    
+    if to_scale == None:
+        return train_copy, test_copy
+    
+    else:
+        X_train = train_copy[to_scale]
+        X_test = test_copy[to_scale]
+        
+        
+        min_max_scaler = MinMaxScaler()
+        robust_scaler = RobustScaler()
+        standard_scaler = StandardScaler()
+        
+        min_max_scaler.fit(X_train)
+        robust_scaler.fit(X_train)
+        standard_scaler.fit(X_train)
+    
+        mmX_train_scaled = min_max_scaler.transform(X_train)
+        rX_train_scaled = robust_scaler.transform(X_train)
+        sX_train_scaled = standard_scaler.transform(X_train)
+    
+    
+        mmX_test_scaled = min_max_scaler.transform(X_test)
+        rX_test_scaled = robust_scaler.transform(X_test)
+        sX_test_scaled = standard_scaler.transform(X_test)
+    
+    
+        mmX_train_scaled = pd.DataFrame(mmX_train_scaled, columns=X_train.columns)
+        mmX_test_scaled = pd.DataFrame(mmX_test_scaled, columns=X_test.columns)
+
+        rX_train_scaled = pd.DataFrame(rX_train_scaled, columns=X_train.columns)
+        rX_test_scaled = pd.DataFrame(rX_test_scaled, columns=X_test.columns)
+
+
+        sX_train_scaled = pd.DataFrame(sX_train_scaled, columns=X_train.columns)
+        sX_test_scaled = pd.DataFrame(sX_test_scaled, columns=X_test.columns)
+    
+    
+    if scale_type == 'MinMax':
+        for i in mmX_train_scaled:
+            train_copy[i] = mmX_train_scaled[i].values
+            test_copy[i] = mmX_test_scaled[i].values
+    elif scale_type == 'Robust':
+        for i in rX_train_scaled:
+            train_copy[i] = rX_train_scaled[i].values
+            test_copy[i] = rX_test_scaled[i].values
+    elif scale_type == 'Standard':
+          for i in sX_train_scaled:
+            train_copy[i] = sX_train_scaled[i].values
+            test_copy[i] = sX_test_scaled[i].values
+    return train_copy, test_copy
+ 

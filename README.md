@@ -82,17 +82,19 @@ Our goal is to predict whether or not an injury was reported in a vehicle at the
 
 #### 2b. Initial Thoughts & Hypothesis
 
+
+
 Ho: Vehicle year and whether an injury is reported is independent.\
 Ha: Vehicle year and whether an injury is reported is not independent.
+
+Ho: Vehicle type and whether an injury is reported is independent.\
+Ha: Vehicle type and whether an injury is reported is not independent.
 
 Ho: An accident caused by intoxication and whether an injury is reported is independent.\
 Ha: An accident caused by intoxication and whether an injury is reported is not independent.
 
 Ho: Weather, at the time of an accident, do not affect whether an injury is reported.\
 Ha: Weather, at the time of an accident, does affect whether an injury is reported.
-
-Ho: Number of occupants in the vehicle does not affect whether an injurt is reported.\
-Ha: Number of occupants in the vehicle does affect whether an injurt is reported.
 
 Ho: Number of occupants in the vehicle does not affect whether an injurt is reported.\
 Ha: Number of occupants in the vehicle does affect whether an injurt is reported.
@@ -106,9 +108,13 @@ Ha: The area's speed limit does affect whether injuries are reported.
 <br>
 
 #### 2c. Findings & Next Steps
- 
+
+We found that attributes of the vehicle such as the year, and its type did contribute to whether an injury was reported.
+
+Surprisingly, weather (as most San Antonians claim have an affect) statistically does not contribute to the number of injuries reported and neither does location!
+
 - Most common accident type only involves 2 cars.
-- Each car contains 1 person majority of the time.
+- Each car contains 1 person majority of the time, but an injury was more likely to be reported as the number of occupants increased
 - The most frequent accident cause is driver inattention, followed by distaction and faulty manuevers.
 - There is a variety of car makes and colors within the data set. White and black cars are the most commonly involved in recent accidents.
 - In the last 6 months, roads where the speed limit are 45 MPH, followed by 35, and 65, have the most accidents involved.
@@ -119,13 +125,15 @@ Ha: The area's speed limit does affect whether injuries are reported.
 - Monday, Tuesday, Saturday early evening shows a decrease to injury rate before a sudden upward trend into the early hours of the following day
 - Wednesday, Thursday seem to be more consistently near the mean rate versus other days
 - Sunday early morning has the highest rate of traffic injuries throughout the data
-- In the visual percentages of hour of accident with injury percentages, there is a marked increased in 0300 hours to 21%. Using $x^2$ testing, there is shown to be a statistical difference in the to categories of hour and if injury occurs.
+- In the visual percentages of hour of accident with injury percentages, there is a marked increased in 0300 hours to 21%. Using X^2 testing, there is shown to be a statistical difference in the to categories of hour and if injury occurs.
 - There is evidence to suggest that there is a difference in injuries reported during Fiesta
 - There is not evidence to suggest that there is a difference in injuries reported during Spurs games (home games)
-- There is evidence to suggest that there is a difference in injuries reported during July 4th (and more of these accidents are due to intoxication than other days)
+- There is evidence to suggest that there is a difference in injuries reported during July 4th weekend (and more of these accidents are due to intoxication than other days)
 
 
-model performance here
+We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 61% recall. 
+Though it did not outperform the baseline's accuracy of 83%, the baseline predicted that nobody got hurt it any accident. Our model is able to predict correctly for 61% of vehicles with injuries.
+
 <br>
 
 Next Steps:
@@ -237,7 +245,7 @@ Here is a data dictionary for our accident.csv
 #### 4b. Data Acquisition
 ✓ _Plan_ ➜ :open_book: **Acquire** ➜ ☐ _Prepare_ ➜ ☐ _Explore_ ➜ ☐ _Model_ ➜ ☐ _Deliver_
 
-- [x] Web scrape San Antonio accident data
+- [x] Web scrape San Antonio accident data from Feb 2021-Aug 2021
 - [x] Observe data structure
 - [x] Save it to a local .csv for use. 
 
@@ -267,11 +275,19 @@ Here is a data dictionary for our accident.csv
 
 - [x] Establish baseline prediction
 - [x] Create, fit, and predict with models
+- [x] Use GridsearchCV to find optimal hyperparameters
 - [x] Evaluate models with cross validation
+- [x] Find ways to handle imbalanced data
+- [x] Emphasis on recall score
 
 #### 4f. Product Delivery
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ ✓ _Model_ ➜ :white_check_mark: **Deliver**
 - [x] Prepare Jupyter Notebook with thorough walk-through of the data science pipeline
+- [x] Review Panel I
+- [x] Review Panel II
+- [x] Review Panel III
+- [x] Recording of Presentation
+- [x] Live Presentation
 - [x] Share findings 
 - [x] Address next steps
 
@@ -302,6 +318,7 @@ Recreate this project in a few easy steps:
 <br>
 
 ### 7. Ending Notes
+---
 
 Remember that you can do your part to protect yourself and others before an accident happens. 
  - Commute with care
