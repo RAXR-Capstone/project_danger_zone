@@ -1,3 +1,4 @@
+#imports
 import pandas as pd 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,43 +12,76 @@ import itertools
 import re
 from sklearn.cluster import KMeans
 
-
+#san antonio map
 img = mpimg.imread('work_space/Pictures/sa.png')
 
 
 def get_distribution(df):
+    '''
+    plots countplot distributions for specified columns in df
+    '''
+    #set up loop
     for i in df:
+        #set figure size
         plt.figure(figsize=(20,9))
+        #put title
         plt.title('{} Distribution'.format(i))
+        #label x axis
         plt.xlabel(i)
+        #label y axis as count
         plt.ylabel('count')
+        #create countplot
         sns.countplot(data=df, x=i)
+        #show the plot
         plt.show()
         
 def compare_to_target(df, target):
+    '''
+    compare_to_target will compare specified columns to a target variable
+    '''
     
-
+    #initiate loop
     for i in df:
+        #if target is continuous, plot scatter plot
         if  df[target].dtype == np.float64:
+            #set figure size
             plt.figure(figsize=(16,9))
+            #set title
             plt.title('{} vs {}'.format(i,target))
+            #plot scatterplot
             sns.scatterplot(data=df , y = target, x = i)
+            #show graph
             plt.show()
+        #if target is not continuous, plot countplot   
         else:
+            #set figure size
             plt.figure(figsize=(16,9))
+            #set title
             plt.title('{} Distribution'.format(i))
+            #set x axis title
             plt.xlabel(i)
+            #set y axis title
             plt.ylabel('count')
+            #make countplot
             sns.countplot(data=df , x=i, hue=target)
+            #show
             plt.show()
         
             
         
 def plot_variable_pairs(df, cont_vars = 2):
+    '''
+    plot_variable_pairs will take in a df and plots regplots of every unique combination
+    '''
+    #make combos
     combos = itertools.combinations(df,cont_vars)
+    #make loop
     for i in combos:
+        #figure size
         plt.figure(figsize=(8,3))
+        #make reg plot of each combo
         sns.regplot(data=df, x=i[0], y =i[1],line_kws={"color":"red"})
+        #show plot
         plt.show()
 
         
@@ -55,13 +89,21 @@ def get_heatmap(df, target):
     '''
     This method will return a heatmap of all variables and there relation to churn
     '''
+    #set figure size
     plt.figure(figsize=(15,12))
+    #make heatmap
     heatmap = sns.heatmap(df.corr()[[target]].sort_values(by=target, ascending=False), annot=True)
+    #title
     heatmap.set_title('Feautures  Correlating with {}'.format(target))
+    #show the heatmap
     plt.show()
+    #return heatmap
     return heatmap
 
 def plot_map(train):
+    '''
+    plot map of accidents in San Antonio
+    '''
     m = folium.Map(location=[29.377711363953658, -98.4970935625])
     for i in range(0,len(train)):
         if train.injury_class.iloc[i] == 0:
@@ -94,6 +136,9 @@ def plot_time(train):
     
 
 def plot_hour(train):
+    '''
+    plot hour over days of the week
+    '''
     train['day_num'] = train.set_index('crash_date').index.day_of_week
     crash_hour_mean = train.groupby(['day_num', 'crash_hour']).mean().injury_class
     q1, q3 = crash_hour_mean.quantile([0.25, 0.75])
@@ -125,6 +170,9 @@ def plot_hour(train):
     # print it
     
 def time_breakdown(train):
+    '''
+    plots a horizontal bar chart showing injury pct per hour
+    '''
     # create pct_inj column for injury pct
     pct_inj = (train[train.injury_class == 1].groupby(['crash_hour']).crash_id.count() /
                         train.groupby(['crash_hour']).crash_id.count())
@@ -170,6 +218,9 @@ def time_breakdown(train):
     plt.show()
 
 def plot_dow(train):
+    '''
+    plots a horizontal bar chart showing injury pct for days of the week
+    '''
     # create pct_inj column for injury pct
     pct_inj = (train[train.injury_class == 1].groupby(['crash_day']).crash_id.count() /
                         train.groupby(['crash_day']).crash_id.count())
@@ -215,6 +266,9 @@ def plot_dow(train):
     plt.show()
     
 def plot_spurs(train):
+    '''
+    plots accidents on spurs days
+    '''
     injured = train.injury_class == 1
         # create list of dates for spurs home games
     spurs_games = ['2021-02-01', '2021-02-03', '2021-02-08', '2021-02-09',
@@ -318,6 +372,9 @@ def plot_spurs(train):
     plt.show()
     
 def plot_fiesta(train):
+    '''
+    plots accidents during fiesta
+    '''
     injured = train.injury_class == 1
     # create mask for dates between fiesta
     train['fiesta'] = train.crash_date.between('2021-06-17', '2021-06-27')
@@ -384,6 +441,9 @@ def plot_fiesta(train):
     plt.show()
 
 def plot_the_4th(train):
+    '''
+    plot accidents during july 4th weekend
+    '''
     injured = train.injury_class == 1
     # create mask for dates between fiesta
     train['jul_fourth'] = train.crash_date.between('2021-07-01', '2021-07-06 09:00:00')
