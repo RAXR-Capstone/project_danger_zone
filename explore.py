@@ -474,13 +474,19 @@ def create_scatter_plot(x,y,df,X):
     """ Takes in x and y (variable names as strings, along with returned objects from previous
     function create_cluster and creates a plot"""
     #set figure size
-    plt.figure(figsize=(30, 15))
+    plt.figure(figsize=(20, 16))
+    plt.xlabel('', size = 20)
+    plt.ylabel('', size = 20)
+    plt.xticks(size = 20)
+    plt.yticks(size = 20)
     #visualize cluster
     sns.scatterplot(x = x, y = y, data = df, hue = 'location_cluster')
     #centroids
     centroids = pd.DataFrame(kmeans.cluster_centers_, columns=X.columns)
     #plot centroids 
     centroids.plot.scatter(y=y, x= x, ax=plt.gca(), alpha=.30, s=500, c='black')
+    plt.legend(bbox_to_anchor=(1.17,1), loc="upper right", prop={'size': 20})
+    plt.title('San Antonio Accident Location Clusters', color = 'black',size = 30)
     plt.show()
     return df
     
