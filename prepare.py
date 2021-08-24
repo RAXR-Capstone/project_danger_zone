@@ -28,6 +28,7 @@ warnings.filterwarnings("ignore")
 
 def encode_vehicle_type(df):
     '''
+    encode vehicle type into numeric data type
     '''
 
     # make encoder object
@@ -178,6 +179,7 @@ def clean_driver_age(df):
 
 def clean_driver_gender(df):
     '''
+    clean driver gender to driver_male column. 1 as male, 0 as female, null for unknown
     '''
 
     # replace "Unknown" gender with NaN
@@ -497,6 +499,8 @@ def prep_damage_data(df):
 
 def basic_clean(string):
     '''
+    basic_clean takes in a string and lowercases its contents, normalizes unicode characters,
+    and replaces anything that is not a letter, number, whitespace, or single quote with nothing
     '''
     
     # convert applicable characters to lowercase
@@ -514,6 +518,7 @@ def basic_clean(string):
 
 def tokenize(string):
     '''
+    tokenize will take in a string and tokenize all of the words in it
     '''
     
     # create tokenizer object
@@ -526,6 +531,7 @@ def tokenize(string):
 
 def remove_stopwords(string, extra_words=None, exclude_words=None):
     '''
+    takes in some text and removes stop words
     '''
     
     # create stopwords list
@@ -550,6 +556,7 @@ def remove_stopwords(string, extra_words=None, exclude_words=None):
 
 def lemmatize(string):
     '''
+    takes in a string and lemmatizes it
     '''
     
     # create lemmatizer object
@@ -737,6 +744,8 @@ def create_kmode_clusters(train, test, n, cluster_name, var=[]):
 
 def create_kmeans_clusters(train, test, n, cluster_name, var=[]):
     '''
+    takes in train and test sets, a desired cluster name, and the variables to cluster on.
+    will return clusters to both the train and test set
     '''
 
     #initialize kmode 
@@ -788,6 +797,7 @@ def create_mvc_clusters(train, test):
 
 def clean_dtypes(df):
     '''
+    fix data types into integers
     '''
 
     # set driver_age as integer dtype
