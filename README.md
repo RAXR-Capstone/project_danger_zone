@@ -129,6 +129,7 @@ Surprisingly, weather (as most San Antonians claim have an affect) statistically
 - There is evidence to suggest that there is a difference in injuries reported during Fiesta
 - There is not evidence to suggest that there is a difference in injuries reported during Spurs games (home games)
 - There is evidence to suggest that there is a difference in injuries reported during July 4th weekend (and more of these accidents are due to intoxication than other days)
+- Region within city does not affect injury rates
 
 
 We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 61% recall. 
@@ -154,7 +155,7 @@ Next Steps:
 
 This accident.csv was acquired from [www.myaccident.org]. We only took in accidents from Mid February - Mid August of 2021 that occurred in San Antonio, TX and surrounding areas. Every accident page will have the date, time, location, information of the cars, drivers, and cause as well as if they reported an injury, etc. 
 
-We did create new features based on existing ones. 
+We did create new features based on existing ones. We used redacted VIN numbers to acquire all the vehicle types.
 
 <br>
 
