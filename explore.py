@@ -442,8 +442,7 @@ def plot_fiesta(train):
 
 def plot_the_4th(train):
     '''
-    plot accidents during july 4th weekend
-    '''
+    plot accidents during july 4th weekend'''
     injured = train.injury_class == 1
     # create mask for dates between fiesta
     train['jul_fourth'] = train.crash_date.between('2021-07-01', '2021-07-06 09:00:00')
