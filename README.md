@@ -10,7 +10,7 @@ Brought to you by data scientists:
 <br>
 <br>
 
-San Antonio is the 7th most populated, and one of the fastest growing cities in the U.S.A. In Bexar County alone, there were nearly 50,000 car crashes in 2020. Of these, 16,780 were injured, and 200 died. With an increasing number of drivers on the roads, there is a recurring need to keep people safe. Using 2021 San Antonio car accident data, Project Danger Zone will look into features that are likely to cause casualties, so that insight can be delivered to entities such as TXDot, Bexar County Public Works, insurance companies, and the general public.
+San Antonio is the 7th most populated, and one of the fastest growing cities in the U.S.A. In Bexar County alone, there were nearly 50,000 car crashes in 2020. Of these, 16,780 were injured, and 200 died. With an increasing number of drivers on the roads, there is a recurring need to keep people safe. Using 2021 San Antonio car accident data, Project Danger Zone will look into features that are likely to cause injuries, so that insight can be delivered to entities such as TXDot, Bexar County Public Works, emergency dispatchers, insurance companies, and the general public.
 
 <br>
 <br>
@@ -317,7 +317,9 @@ Recreate this project in a few easy steps:
  - Git clone this repository or:
      - Download accident.csv
      - Download .py modules
-     - Download final_danger_zone.ipynb notebook
+     - Download final_danger_zone.ipynb notebook (install Folium to see and use interactive map)
+
+
 
 <br>
 <br>
