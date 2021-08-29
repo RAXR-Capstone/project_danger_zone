@@ -117,33 +117,38 @@ Surprisingly, weather (as most San Antonians claim have an affect) statistically
 - Each car contains 1 person majority of the time, but an injury was more likely to be reported as the number of occupants increased
 - The most frequent accident cause is driver inattention, followed by distaction and faulty manuevers.
 - There is a variety of car makes and colors within the data set. White and black cars are the most commonly involved in recent accidents.
-- In the last 6 months, roads where the speed limit are 45 MPH, followed by 35, and 65, have the most accidents involved.
-- Cars followed by mpv(multi person vehicles ie. mini vans and crossovers) are involved in most accidents, followed by trucks
-- Variables that correlate to accident by themselves were whether the air bag deployed, and the vehicle occupant count
-- Many of the variables did not correlate alone, after clustering some of the variables together, we were able to find more correlation to the target variable
-- the clusters created took speed and damage into account to help when modeling 
-- Monday, Tuesday, Saturday early evening shows a decrease to injury rate before a sudden upward trend into the early hours of the following day
-- Wednesday, Thursday seem to be more consistently near the mean rate versus other days
-- Sunday early morning has the highest rate of traffic injuries throughout the data
+- In the last 6 months, roads with a speed limit of 45 MPH, followed by 35 MPH, and 65 MPH, have the most accidents involved.
+- Cars followed by mpv(multi person vehicles ie. mini vans and crossovers) are involved in most accidents, followed by trucks.
+- Variables that correlate to accident by themselves were whether the air bag deployed, and the vehicle occupant count. 
+- Many of the variables did not correlate alone, after clustering some of the variables together, we were able to find more correlation to the target variable.
+- Clustering speed limit, damage area, vehicle type, and airbag deployment helped when modeling. 
+- Monday, Tuesday, Saturday early evening shows a decrease to injury rate before a sudden upward trend into the early hours of the following day.
+- Wednesday, Thursday seem to be more consistently near the mean rate versus other days.
+- Early morning on Sundays has the highest rate of traffic injuries throughout the data.
 - In the visual percentages of hour of accident with injury percentages, there is a marked increased in 0300 hours to 21%. Using X^2 testing, there is shown to be a statistical difference in the to categories of hour and if injury occurs.
-- There is evidence to suggest that there is a difference in injuries reported during Fiesta
-- There is not evidence to suggest that there is a difference in injuries reported during Spurs games (home games)
-- There is evidence to suggest that there is a difference in injuries reported during July 4th weekend (and more of these accidents are due to intoxication than other days)
-- Region within city does not affect injury rates
+- There is evidence to suggest that there is a difference in injuries reported during Fiesta.
+- There is not evidence to suggest that there is a difference in injuries reported during Spurs games (home games), though more accidents are caused by speeding.
+- There is evidence to suggest that there is a difference in injuries reported during July 4th weekend (and more of these accidents are due to intoxication than other days.)
+- Region within city does not affect injury rates. 
 
 
-We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 61% recall. 
-Though it did not outperform the baseline's accuracy of 83%, the baseline predicted that nobody got hurt it any accident. Our model is able to predict correctly for 61% of vehicles with injuries.
+We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 62% recall. 
+Though it did not outperform the baseline's accuracy of 83%, it did beat the baseline recall score of 0%.
+
+Our model can be used by crash detection services and their collaboration with first responders to help automate triage when EMT response is short handed. It can also be used by auto insurance companies to help identify possible discrepancies with injury claims. 
+
+
+
 
 <br>
 
 Next Steps:
 
 
- - Reevaluate what type of car caused the damage zone
- - Acquire seatbelt status of everyone in the vehicle
- - Find more relationships between variables
- - Individual street analysis
+ - Reevaluate what type of car caused the damage area: There is probably value in knowing if an injury would occur based off of what type of vehicle hit them, and where they hit them.
+ - Acquire seatbelt status of everyone in the vehicle: Since there is seatbelt information on the website, perhaps acquiring it would give us a valuable feature to work with. 
+ - Find more relationships between variables: With more time, we would like to explore our variables in more depth.
+ - Individual street analysis: We still believe location matters, but perhaps not on as large of a scale of what we used by clustering the 5 regions of the city. With more time, we could extract the street from the address and see if injury rates differ between them.
 
 <br>
 <br>
@@ -284,13 +289,12 @@ Here is a data dictionary for our accident.csv
 #### 4f. Product Delivery
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ ✓ _Model_ ➜ :white_check_mark: **Deliver**
 - [x] Prepare Jupyter Notebook with thorough walk-through of the data science pipeline
+- [x] Create presentation deck to present our findings
 - [x] Review Panel I
 - [x] Review Panel II
 - [x] Review Panel III
 - [x] Recording of Presentation
-- [x] Live Presentation
-- [x] Share findings 
-- [x] Address next steps
+
 
 
 <br>
