@@ -66,7 +66,7 @@ Using 2021 San Antonio car crash data, web scraped from [myaccident](www.myaccid
 - Jupyter Notebook with a complete walkthrough of the data science pipeline, and commented with takeaways
 - Any Python module(s) used to automate processes in the project 
 - A presentation slide deck
-- Live presentation for Codeup's Florence Data Scientist Day on September 3rd, 2021! 
+- Recorded presentation for Codeup's Florence Data Scientist Day on September 3rd, 2021! 
 
 <br>
 <br>
@@ -132,8 +132,8 @@ Surprisingly, weather (as most San Antonians claim have an affect) statistically
 - Region within city does not affect injury rates
 
 
-We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 61% recall. 
-Though it did not outperform the baseline's accuracy of 83%, the baseline predicted that nobody got hurt it any accident. Our model is able to predict correctly for 61% of vehicles with injuries.
+We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 62% recall. 
+Though it did not outperform the baseline's accuracy of 83%, the baseline predicted that nobody got hurt it any accident (recall score of 0%). Our model is able to predict correctly for 62% of vehicles with injuries. This can be helpful for auto insurance companies to help identify possible discrepancies with injury claims, and also crash detection services with first responders to help automate triage when EMT response is short handed.
 
 <br>
 
@@ -284,13 +284,13 @@ Here is a data dictionary for our `accident.csv`
 #### 4f. Product Delivery
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ ✓ _Model_ ➜ :white_check_mark: **Deliver**
 - [x] Prepare Jupyter Notebook with thorough walk-through of the data science pipeline
+- [x] Presentation slide deck
 - [x] Review Panel I
 - [x] Review Panel II
 - [x] Review Panel III
 - [x] Recording of Presentation
-- [x] Live Presentation
-- [x] Share findings 
-- [x] Address next steps
+
+
 
 
 <br>
@@ -313,7 +313,8 @@ Recreate this project in a few easy steps:
  - Git clone this repository or:
      - Download `accident.csv`
      - Download `.py` modules
-     - Download `final_danger_zone.ipynb` notebook
+     - Download `final_danger_zone.ipynb` notebook (install Folium to see interactive map)
+
 
 <br>
 <br>
