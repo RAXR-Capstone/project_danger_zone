@@ -84,26 +84,26 @@ Our goal is to predict whether or not an injury was reported in a vehicle at the
 
 
 
-***Ho:*** *Vehicle year and whether an injury is reported is independent.*\
-***Ha:*** *Vehicle year and whether an injury is reported is not independent.*
+**Ho:** *Vehicle year and whether an injury is reported is independent.*\
+**Ha:** *Vehicle year and whether an injury is reported is not independent.*
 
-***Ho:*** *Vehicle type and whether an injury is reported is independent.*\
-***Ha:*** *Vehicle type and whether an injury is reported is not independent.*
+**Ho:** *Vehicle type and whether an injury is reported is independent.*\
+**Ha:** *Vehicle type and whether an injury is reported is not independent.*
 
-***Ho:*** *An accident caused by intoxication and whether an injury is reported is independent.*\
-***Ha:*** *An accident caused by intoxication and whether an injury is reported is not independent.*
+**Ho:** *An accident caused by intoxication and whether an injury is reported is independent.*\
+**Ha:** *An accident caused by intoxication and whether an injury is reported is not independent.*
 
-***Ho:*** *Weather, at the time of an accident, do not affect whether an injury is reported.*\
-***Ha:*** *Weather, at the time of an accident, does affect whether an injury is reported.*
+**Ho:** *Weather, at the time of an accident, do not affect whether an injury is reported.*\
+**Ha:** *Weather, at the time of an accident, does affect whether an injury is reported.*
 
-***Ho:*** *Number of occupants in the vehicle does not affect whether an injurt is reported.*\
-***Ha:*** *Number of occupants in the vehicle does affect whether an injurt is reported.*
+**Ho:** *Number of occupants in the vehicle does not affect whether an injurt is reported.*\
+**Ha:** *Number of occupants in the vehicle does affect whether an injurt is reported.*
 
-***Ho:*** *What part of town the accident occurs in does not affect if the vehicle reports an injury.*\
-***Ha:*** *What part of town the accident occurs in affects if the vehicle reports an injury.*
+**Ho:** *What part of town the accident occurs in does not affect if the vehicle reports an injury.*\
+**Ha:** *What part of town the accident occurs in affects if the vehicle reports an injury.*
 
-***Ho:*** *The area's speed limit does not affect whether injuries are reported.*\
-***Ha:*** *The area's speed limit does affect whether injuries are reported.*
+**Ho:** *The area's speed limit does not affect whether injuries are reported.*\
+**Ha:** *The area's speed limit does affect whether injuries are reported.*
 
 <br>
 
