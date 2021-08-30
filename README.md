@@ -10,7 +10,7 @@ Brought to you by data scientists:
 <br>
 <br>
 
-In Bexar County during 2020, with a reported 16,780 reported injuries and 200 deaths, there were nearly 50,000 motor vehicle collisions . Using vehicle crash statistics for 2021, our team of four is working to discover the drivers of increased injury rates among motorist with an eye toward providing insights and recommending data-driven action to appropriate agencies, such as TxDOT, Texas DPS, and local governments, in effort to minimize loss of life and injury and save tax payer dollars.
+In Bexar County during 2020, with a reported 16,780 reported injuries and 200 deaths, there were nearly 50,000 motor vehicle collisions. Using vehicle crash statistics for 2021, our team of four is working to discover the drivers of increased injury rates among motorist with an eye toward providing insights and recommending data-driven action to appropriate agencies, such as TxDOT, Texas DPS, and local governments, in effort to minimize loss of life and injury and save tax payer dollars.
 
 <br>
 <br>
@@ -141,7 +141,7 @@ Next Steps:
 
 
  - Reevaluate what type of car caused the damage zone
- - Acquire seatbelt status of everyone in the vehicle
+ - Look at each individual as an observation (ex. seatbelt status, where they were sitting, etc.)
  - Find more relationships between variables
  - Individual street analysis
 
