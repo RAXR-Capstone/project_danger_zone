@@ -10,7 +10,7 @@ Brought to you by data scientists:
 <br>
 <br>
 
-San Antonio is the 7th most populated, and one of the fastest growing cities in the U.S.A. In Bexar County alone, there were nearly 50,000 car crashes in 2020. Of these, 16,780 were injured, and 200 died. With an increasing number of drivers on the roads, there is a recurring need to keep people safe. Using 2021 San Antonio car accident data, Project Danger Zone will look into features that are likely to cause injuries, so that insight can be delivered to entities such as TXDot, Bexar County Public Works, emergency dispatchers, insurance companies, and the general public.
+In Bexar County during 2020, with a reported 16,780 reported injuries and 200 deaths, there were nearly 50,000 motor vehicle collisions . Using vehicle crash statistics for 2021, our team of four is working to discover the drivers of increased injury rates among motorist with an eye toward providing insights and recommending data-driven action to appropriate agencies, such as TxDOT, Texas DPS, and local governments, in effort to minimize loss of life and injury and save tax payer dollars.
 
 <br>
 <br>
@@ -84,26 +84,26 @@ Our goal is to predict whether or not an injury was reported in a vehicle at the
 
 
 
-Ho: Vehicle year and whether an injury is reported is independent.\
-Ha: Vehicle year and whether an injury is reported is not independent.
+***Ho:*** *Vehicle year and whether an injury is reported is independent.*\
+***Ha:*** *Vehicle year and whether an injury is reported is not independent.*
 
-Ho: Vehicle type and whether an injury is reported is independent.\
-Ha: Vehicle type and whether an injury is reported is not independent.
+***Ho:*** *Vehicle type and whether an injury is reported is independent.*\
+***Ha:*** *Vehicle type and whether an injury is reported is not independent.*
 
-Ho: An accident caused by intoxication and whether an injury is reported is independent.\
-Ha: An accident caused by intoxication and whether an injury is reported is not independent.
+***Ho:*** *An accident caused by intoxication and whether an injury is reported is independent.*\
+***Ha:*** *An accident caused by intoxication and whether an injury is reported is not independent.*
 
-Ho: Weather, at the time of an accident, do not affect whether an injury is reported.\
-Ha: Weather, at the time of an accident, does affect whether an injury is reported.
+***Ho:*** *Weather, at the time of an accident, do not affect whether an injury is reported.*\
+***Ha:*** *Weather, at the time of an accident, does affect whether an injury is reported.*
 
-Ho: Number of occupants in the vehicle does not affect whether an injurt is reported.\
-Ha: Number of occupants in the vehicle does affect whether an injurt is reported.
+***Ho:*** *Number of occupants in the vehicle does not affect whether an injurt is reported.*\
+***Ha:*** *Number of occupants in the vehicle does affect whether an injurt is reported.*
 
-Ho: What part of town the accident occurs in does not affect if the vehicle reports an injury.\
-Ha: What part of town the accident occurs in affects if the vehicle reports an injury.
+***Ho:*** *What part of town the accident occurs in does not affect if the vehicle reports an injury.*\
+***Ha:*** *What part of town the accident occurs in affects if the vehicle reports an injury.*
 
-Ho: The area's speed limit does not affect whether injuries are reported.\
-Ha: The area's speed limit does affect whether injuries are reported.
+***Ho:*** *The area's speed limit does not affect whether injuries are reported.*\
+***Ha:*** *The area's speed limit does affect whether injuries are reported.*
 
 <br>
 
@@ -117,38 +117,33 @@ Surprisingly, weather (as most San Antonians claim have an affect) statistically
 - Each car contains 1 person majority of the time, but an injury was more likely to be reported as the number of occupants increased
 - The most frequent accident cause is driver inattention, followed by distaction and faulty manuevers.
 - There is a variety of car makes and colors within the data set. White and black cars are the most commonly involved in recent accidents.
-- In the last 6 months, roads with a speed limit of 45 MPH, followed by 35 MPH, and 65 MPH, have the most accidents involved.
-- Cars followed by mpv(multi person vehicles ie. mini vans and crossovers) are involved in most accidents, followed by trucks.
-- Variables that correlate to accident by themselves were whether the air bag deployed, and the vehicle occupant count. 
-- Many of the variables did not correlate alone, after clustering some of the variables together, we were able to find more correlation to the target variable.
-- Clustering speed limit, damage area, vehicle type, and airbag deployment helped when modeling. 
-- Monday, Tuesday, Saturday early evening shows a decrease to injury rate before a sudden upward trend into the early hours of the following day.
-- Wednesday, Thursday seem to be more consistently near the mean rate versus other days.
-- Early morning on Sundays has the highest rate of traffic injuries throughout the data.
+- In the last 6 months, roads where the speed limit are 45 MPH, followed by 35, and 65, have the most accidents involved.
+- Cars followed by mpv(multi person vehicles ie. mini vans and crossovers) are involved in most accidents, followed by trucks
+- Variables that correlate to accident by themselves were whether the air bag deployed, and the vehicle occupant count
+- Many of the variables did not correlate alone, after clustering some of the variables together, we were able to find more correlation to the target variable
+- the clusters created took speed and damage into account to help when modeling 
+- Monday, Tuesday, Saturday early evening shows a decrease to injury rate before a sudden upward trend into the early hours of the following day
+- Wednesday, Thursday seem to be more consistently near the mean rate versus other days
+- Sunday early morning has the highest rate of traffic injuries throughout the data
 - In the visual percentages of hour of accident with injury percentages, there is a marked increased in 0300 hours to 21%. Using X^2 testing, there is shown to be a statistical difference in the to categories of hour and if injury occurs.
-- There is evidence to suggest that there is a difference in injuries reported during Fiesta.
-- There is not evidence to suggest that there is a difference in injuries reported during Spurs games (home games), though more accidents are caused by speeding.
-- There is evidence to suggest that there is a difference in injuries reported during July 4th weekend (and more of these accidents are due to intoxication than other days.)
-- Region within city does not affect injury rates. 
+- There is evidence to suggest that there is a difference in injuries reported during Fiesta
+- There is not evidence to suggest that there is a difference in injuries reported during Spurs games (home games)
+- There is evidence to suggest that there is a difference in injuries reported during July 4th weekend (and more of these accidents are due to intoxication than other days)
+- Region within city does not affect injury rates
 
 
-We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 62% recall. 
-Though it did not outperform the baseline's accuracy of 83%, it did beat the baseline recall score of 0%.
-
-Our model can be used by crash detection services and their collaboration with first responders to help automate triage when EMT response is short handed. It can also be used by auto insurance companies to help identify possible discrepancies with injury claims. 
-
-
-
+We created a Gradient Booster Classifier model (undersampling techniques used) that performed with 63% accuracy, and 61% recall. 
+Though it did not outperform the baseline's accuracy of 83%, the baseline predicted that nobody got hurt it any accident. Our model is able to predict correctly for 61% of vehicles with injuries.
 
 <br>
 
 Next Steps:
 
 
- - Reevaluate what type of car caused the damage area: There is probably value in knowing if an injury would occur based off of what type of vehicle hit them, and where they hit them.
- - Acquire seatbelt status of everyone in the vehicle: Since there is seatbelt information on the website, perhaps acquiring it would give us a valuable feature to work with. 
- - Find more relationships between variables: With more time, we would like to explore our variables in more depth.
- - Individual street analysis: We still believe location matters, but perhaps not on as large of a scale of what we used by clustering the 5 regions of the city. With more time, we could extract the street from the address and see if injury rates differ between them.
+ - Reevaluate what type of car caused the damage zone
+ - Acquire seatbelt status of everyone in the vehicle
+ - Find more relationships between variables
+ - Individual street analysis
 
 <br>
 <br>
@@ -160,7 +155,7 @@ Next Steps:
 
 This accident.csv was acquired from [www.myaccident.org]. We only took in accidents from Mid February - Mid August of 2021 that occurred in San Antonio, TX and surrounding areas. Every accident page will have the date, time, location, information of the cars, drivers, and cause as well as if they reported an injury, etc. 
 
-We did create new features based on existing ones. We used redacted VIN numbers to acquire all the vehicle types.
+We did create new features based on existing ones. We used redacted VIN to acquire all the vehicle types.
 
 <br>
 
@@ -168,7 +163,7 @@ We did create new features based on existing ones. We used redacted VIN numbers 
 
 #### 3b. Data Dictionary
 
-Here is a data dictionary for our accident.csv 
+Here is a data dictionary for our `accident.csv`
 
 
 | Column Name               | Description                                                                   |
@@ -251,9 +246,9 @@ Here is a data dictionary for our accident.csv
 #### 4b. Data Acquisition
 ✓ _Plan_ ➜ :open_book: **Acquire** ➜ ☐ _Prepare_ ➜ ☐ _Explore_ ➜ ☐ _Model_ ➜ ☐ _Deliver_
 
-- [x] Web scrape San Antonio accident data from Feb 2021-Aug 2021
+- [x] Web scrape San Antonio accident data from Feb 2021 - Aug 2021
 - [x] Observe data structure
-- [x] Save it to a local .csv for use. 
+- [x] Save it to a local `.csv` for use. 
 
 #### 4c. Data Preparation
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ :soap: **Prepare** ➜ ☐ _Explore_ ➜ ☐ _Model_ ➜ ☐ _Deliver_
@@ -289,12 +284,13 @@ Here is a data dictionary for our accident.csv
 #### 4f. Product Delivery
 ✓ _Plan_ ➜ ✓ _Acquire_ ➜ ✓ _Prepare_ ➜ ✓ _Explore_ ➜ ✓ _Model_ ➜ :white_check_mark: **Deliver**
 - [x] Prepare Jupyter Notebook with thorough walk-through of the data science pipeline
-- [x] Create presentation deck to present our findings
 - [x] Review Panel I
 - [x] Review Panel II
 - [x] Review Panel III
 - [x] Recording of Presentation
-
+- [x] Live Presentation
+- [x] Share findings 
+- [x] Address next steps
 
 
 <br>
@@ -303,9 +299,9 @@ Here is a data dictionary for our accident.csv
 ### 5. Modules
 ---
 
- - wrangle.py = contains acquire and prepare functions used to retrieve and prepare the accident data for use.
- - explore.py = contains functions used to explore, visualize, and run statistical tests.
- - evaluate.py = contains modeling related functions
+ - `wrangle.py` = contains acquire and prepare functions used to retrieve and prepare the accident data for use.
+ - `explore.py` = contains functions used to explore, visualize, and run statistical tests.
+ - `evaluate.py` = contains modeling related functions
 
 <br>
 <br>
@@ -315,11 +311,9 @@ Here is a data dictionary for our accident.csv
 
 Recreate this project in a few easy steps:
  - Git clone this repository or:
-     - Download accident.csv
-     - Download .py modules
-     - Download final_danger_zone.ipynb notebook (install Folium to see and use interactive map)
-
-
+     - Download `accident.csv`
+     - Download `.py` modules
+     - Download `final_danger_zone.ipynb` notebook
 
 <br>
 <br>
@@ -334,7 +328,7 @@ Remember that you can do your part to protect yourself and others before an acci
      - Pay attention to your surroundings, minimize distractions, hands on the wheel, and keep your eyes on the road (plus mirrors!)
  - Protect yourself, family, friends, and others
      - Wear your seatbelt and maintain a safe distance between other vehicles. Don't forget to turn on your headlights at night.
- - Don't drink and drive
+ - **Don't drink and drive**
      - Find a designated driver
      - Before major holidays, look out for potentially free tow and ride services offered in San Antonio in case you or someone you know could use it
      - If possible, avoid driving late at night.  
