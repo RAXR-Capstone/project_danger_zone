@@ -1,54 +1,34 @@
 
-<img src="https://github.com/RAXR-Capstone/project_danger_zone/blob/master/work_space/Pictures/danger_banner.png">
-
-# Project Danger Zone
-Brought to you by data scientists:
- - Xavier Carter
- - Robert Murphy
- - Anna Vu
- - Ray Zapata
-<br>
+# <img src="https://github.com/RAXR-Capstone/project_danger_zone/blob/master/work_space/Pictures/danger_banner.png">
 <br>
 
-In Bexar County during 2020, with a reported 16,780 reported injuries and 200 deaths, there were nearly 50,000 motor vehicle collisions. Using vehicle crash statistics for 2021, our team of four is working to discover the drivers of increased injury rates among motorist with an eye toward providing insights and recommending data-driven action to appropriate agencies, such as TxDOT, Texas DPS, and local governments, in effort to minimize loss of life and injury and save tax payer dollars.
+#### <p align='center'>Authored by: *[Xavier Carter](https://github.com/carterrxavier)*, *[Robert Murphy](https://github.com/RobLMurphy92)*, *[Anna Vu](https://github.com/annah-vu)*, *[Ray Zapata](https://github.com/rayzapata)*</p>
 
-<br>
-<br>
+In Bexar County during 2020, with a reported 16,780 reported injuries and 200 deaths, there were nearly 50,000 motor vehicle collisions. Using vehicle crash statistics for 2021, our team of four is working to discover the drivers of increased injury rates among motorist with an eye toward providing insights and recommending data-driven action to appropriate agencies, such as TxDOT, Texas DPS, and local governments, in effort to minimize loss of life and injury and save tax payer dollars.<br><br><br>
 
-## Table of Contents
-
-1.   [Project Overview              ](#1-project-overview)\
-1a.   [Project Description          ](#1a-project-description)\
-1b.   [Project Deliverables         ](#1b-project-deliverables)
-
-
-2.  [Project Summary                ](#2-project-summary)\
-2a.   [Goals                        ](#2a-goals)\
-2b.   [Initial Thoughts & Hypothesis](#2b-initial-thoughts--hypothesis)\
-2c.   [Findings & Next Steps        ](#2c-findings--next-steps)
-
-3. [Data Context                 ](#c-data-context)\
-3a.   [About Our Data            ](#3a-about-our-data)\
-3b.   [Data Dictionary           ](#3b-data-dictionary)
-
-4.  [Pipeline                     ](#4-pipeline)\
-4a.   [Project Planning             ](#4a-project-planning)\
-4b.   [Data Acquisition             ](#4b-data-acquisition)\
-4c.   [Data Preparation             ](#4c-data-preparation)\
-4d.   [Data Exploration             ](#4d-data-exploration)\
-4e.   [Modeling & Evaluation        ](#4e-modeling--evaluation)\
-4f.   [Product Delivery             ](#4f-product-delivery)
-
-5.   [Modules                      ](#5-modules)
-
-6.  [Project Reproduction         ](#6-project-reproduction)
-
-7. [Ending Notes                  ](#7-ending-notes)
-
-<br>
-
-
-<br>
+### <hr>
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Table of Contents
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.   [Project Overview              ](#1-project-overview)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1a.   [Project Description          ](#1a-project-description)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1b.   [Project Deliverables         ](#1b-project-deliverables)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.  [Project Summary                ](#2-project-summary)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2a.   [Goals                        ](#2a-goals)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2b.   [Initial Thoughts & Hypothesis](#2b-initial-thoughts--hypothesis)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2c.   [Findings & Next Steps        ](#2c-findings--next-steps)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. [Data Context                 ](#3-data-context)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3a.   [About Our Data            ](#3a-about-our-data)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3b.   [Data Dictionary           ](#3b-data-dictionary)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.  [Pipeline                     ](#4-pipeline)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4a.   [Project Planning             ](#4a-project-planning)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4b.   [Data Acquisition             ](#4b-data-acquisition)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4c.   [Data Preparation             ](#4c-data-preparation)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4d.   [Data Exploration             ](#4d-data-exploration)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4e.   [Modeling & Evaluation        ](#4e-modeling--evaluation)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4f.   [Product Delivery             ](#4f-product-delivery)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.   [Modules                      ](#5-modules)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.  [Project Reproduction         ](#6-project-reproduction)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7. [Ending Notes                  ](#7-ending-notes)<br>
+### <hr><br><br>
 
 ### 1. Project Overview
 ---
