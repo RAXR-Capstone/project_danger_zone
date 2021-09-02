@@ -1,5 +1,4 @@
-#Z0096
-
+#Data Preparation 
 
 # import standard libraries
 import pandas as pd
@@ -84,12 +83,17 @@ def misc_prep(df):
 
 def feature_extraction(df):
     '''
+    feature_extraction will create columns crash_day, crash_hour, driver_age_bin, and vehicle_year_bin 
+    from our existing data by extracting features from our crash_date column or binning ages
     '''
 
-    #
+    #get the weekday name from date
     df['crash_day'] = df.set_index('crash_date').index.day_name()
+    #get the hour the crash happened from date
     df['crash_hour'] = df.crash_date.dt.hour
+    #bin age into groups
     df['driver_age_bin'] = pd.cut(df.driver_age, [16, 25, 35, 45, 60, 120])
+    #bin vehicle year into groups
     df['vehicle_year_bin'] = pd.cut(df.vehicle_year,
                                    bins=[1984, 1999, 2002,
                                          2003, 2004, 2005,
@@ -345,6 +349,7 @@ def clean_color(df):
 
 def clean_type(df):
     '''
+    clean_type will distinguish vehicle types further and simplify their names
     '''
 
     #
@@ -654,6 +659,8 @@ def create_fault_narrative_cols(df):
 
 def clean_traffic_cats(df):
     '''
+    clean_traffic_cats will clean traffic conditions by simplifying their names and putting more uncommon conditions into 
+    the "other" category, and rename the column as factors_road
     '''
     
     # turn object into string and lowercase, strip terminal whitespace
@@ -688,6 +695,9 @@ def clean_traffic_cats(df):
 
 def clean_weather_cats(df):
     '''
+    clean_weather_cats will clean the column weather_conditions, take lesser common ones
+    and turn them into an 'other' category,
+    and rename the column into factors_weather
     '''
     
     # turn object into string and lowercase, strip terminal whitespace
@@ -823,6 +833,8 @@ def clean_dtypes(df):
 
 def clean_collision_data(dropna=True):
     '''
+    clean_collision_data will take in the original csv, and perform all of the cleaning and prep functions
+    (see previous functions), it will also any rows with at least one null value
     '''
 
     # read in csv
@@ -845,7 +857,7 @@ def clean_collision_data(dropna=True):
         df = df.dropna()
         # convert to appropriate data types
         df = clean_dtypes(df)
-    #
+    #create new features from existing ones
     df = feature_extraction(df)
 
     return df
@@ -853,6 +865,8 @@ def clean_collision_data(dropna=True):
 
 def collision_data(dropna=True):
     '''
+    collision_data will clean our data, drop nulls, and split the data into train and test sets.
+    Returns train set, and test set.
     '''
 
     #
@@ -877,57 +891,68 @@ def scale_data(train, test, scale_type = None, to_scale = None):
     '''
     returns scaled data of specified type into data frame
     '''
+    #create copies of our train set and test set
     train_copy = train.copy()
     test_copy = test.copy()
     
+    #if no scaler specified, return the train and test sets
     if to_scale == None:
         return train_copy, test_copy
     
+    #if scaler is specified
     else:
+        #define an X set with columns (to scale) inputted
         X_train = train_copy[to_scale]
         X_test = test_copy[to_scale]
         
-        
+        #intialize minmax, robust, and standars scalers
         min_max_scaler = MinMaxScaler()
         robust_scaler = RobustScaler()
         standard_scaler = StandardScaler()
         
+        #fit the scalers to X_train
         min_max_scaler.fit(X_train)
         robust_scaler.fit(X_train)
         standard_scaler.fit(X_train)
-    
+        
+        #transform columns to scale with the different scalers on X_train
         mmX_train_scaled = min_max_scaler.transform(X_train)
         rX_train_scaled = robust_scaler.transform(X_train)
         sX_train_scaled = standard_scaler.transform(X_train)
     
-    
+        #transform columns to scale with the different scalers on X_test
         mmX_test_scaled = min_max_scaler.transform(X_test)
         rX_test_scaled = robust_scaler.transform(X_test)
         sX_test_scaled = standard_scaler.transform(X_test)
     
-    
+        #minmax scaled data into dataframe
         mmX_train_scaled = pd.DataFrame(mmX_train_scaled, columns=X_train.columns)
         mmX_test_scaled = pd.DataFrame(mmX_test_scaled, columns=X_test.columns)
-
+        
+        #robust scaled data into dataframe
         rX_train_scaled = pd.DataFrame(rX_train_scaled, columns=X_train.columns)
         rX_test_scaled = pd.DataFrame(rX_test_scaled, columns=X_test.columns)
 
-
+        #standard scaled data into dataframe
         sX_train_scaled = pd.DataFrame(sX_train_scaled, columns=X_train.columns)
         sX_test_scaled = pd.DataFrame(sX_test_scaled, columns=X_test.columns)
     
-    
+    #if MinMax was specified, insert the minmax scaled data into the train and test copies
     if scale_type == 'MinMax':
         for i in mmX_train_scaled:
             train_copy[i] = mmX_train_scaled[i].values
             test_copy[i] = mmX_test_scaled[i].values
+    #if Robust was specified, insert the robust scaled data into the train and test copies
     elif scale_type == 'Robust':
         for i in rX_train_scaled:
             train_copy[i] = rX_train_scaled[i].values
             test_copy[i] = rX_test_scaled[i].values
+    #if Standard was specified, insert the standardized scaled data into the train and test copies
     elif scale_type == 'Standard':
           for i in sX_train_scaled:
             train_copy[i] = sX_train_scaled[i].values
             test_copy[i] = sX_test_scaled[i].values
+            
+    #return the train and test copy sets with scaled data
     return train_copy, test_copy
  
