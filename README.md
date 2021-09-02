@@ -28,7 +28,7 @@ In Bexar County during 2020, with a reported 16,780 reported injuries and 200 de
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5.   [Modules                      ](#5-modules)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6.  [Project Reproduction         ](#6-project-reproduction)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;7. [Ending Notes                  ](#7-ending-notes)<br>
-### <hr><br><br>
+### <br><p align='center'><img src="https://github.com/RAXR-Capstone/project_danger_zone/blob/master/work_space/Pictures/divider.png"></p><br>
 
 ### 1. Project Overview
 ---
