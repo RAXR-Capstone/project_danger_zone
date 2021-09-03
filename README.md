@@ -173,7 +173,7 @@ Here is a data dictionary for our `accident.csv`
 | dl_unlicensed             | value of '1' if driver was not licensed to drive, '0' if they were licensed   |
 | driver_age                | age of the driver in years                                                    |
 | driver_male               | value of '1' if driver is male, '0' if female, '-1' if unknown                |
-| driver_race               | 'H' Hispanic, 'W' White, 'B' Black, 'A' Asian, 'O' Other, 'N' for unknown     |
+| driver_race               | 'H' Hispanic,'W' White,'B' Black,'A' Asian,'O' Other,'N' Native/Indigenous    |
 | factors_road              | description of road factors                                                   |
 | factors_spd_lmt_mph       | speed limit of the road where accident occurred                               |
 | factors_weather           | the weather conditions at the time of the accident                            |
